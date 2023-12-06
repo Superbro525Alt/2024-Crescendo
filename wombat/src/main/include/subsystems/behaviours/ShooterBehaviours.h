@@ -6,7 +6,7 @@
 namespace wom {
 namespace subsystems {
   namespace behaviours {
-    class ShooterConstant : public behaviour::Behaviour {
+    class ShooterConstant : public behaviour::wom::Behaviour {
      public:
       ShooterConstant(Shooter *s, units::volt_t setpoint);
 
@@ -17,7 +17,7 @@ namespace subsystems {
       units::volt_t _setpoint;
     };
 
-    class ShooterSpinup : public behaviour::Behaviour {
+    class ShooterSpinup : public behaviour::wom::Behaviour {
      public:
       ShooterSpinup(Shooter *s, units::radians_per_second_t speed, bool hold = false);
 

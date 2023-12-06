@@ -6,17 +6,17 @@
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
-using namespace behaviour;
+;
 
-class MockSystem : public HasBehaviour {};
-class MockBehaviour : public Behaviour {
+class MockSystem : public wom::HasBehaviour {};
+class MockBehaviour : public wom::Behaviour {
  public:
   MOCK_METHOD0(OnStart, void());
   MOCK_METHOD0_T(OnStop, void());
   MOCK_METHOD1(OnTick, void(units::time::second_t));
 };
 
-TEST(Behaviour, Tick) {
+TEST(wom::Behaviour, Tick) {
   auto b = make<MockBehaviour>();
 
   {
@@ -32,10 +32,10 @@ TEST(Behaviour, Tick) {
   EXPECT_FALSE(b->Tick());
   b->SetDone();
   EXPECT_TRUE(b->Tick());
-  EXPECT_EQ(b->GetBehaviourState(), BehaviourState::DONE);
+  EXPECT_EQ(b->GetBehaviourState(), wom::BehaviourState::DONE);
 }
 
-TEST(Behaviour, Interrupt) {
+TEST(wom::Behaviour, Interrupt) {
   auto b = make<MockBehaviour>();
 
   {
@@ -49,10 +49,10 @@ TEST(Behaviour, Interrupt) {
   EXPECT_FALSE(b->Tick());
   b->Interrupt();
   EXPECT_TRUE(b->Tick());
-  EXPECT_EQ(b->GetBehaviourState(), BehaviourState::INTERRUPTED);
+  EXPECT_EQ(b->GetBehaviourState(), wom::BehaviourState::INTERRUPTED);
 }
 
-TEST(Behaviour, Timeout) {
+TEST(wom::Behaviour, Timeout) {
   auto b = make<MockBehaviour>();
   b->WithTimeout(10_ms);
 
@@ -71,7 +71,7 @@ TEST(Behaviour, Timeout) {
 }
 
 TEST(SequentialBehaviour, InheritsControls) {
-  HasBehaviour a, b;
+  wom::HasBehaviour a, b;
   auto         b1 = make<MockBehaviour>(), b2 = make<MockBehaviour>();
   b1->Controls(&a);
   b2->Controls(&a);
@@ -108,14 +108,14 @@ TEST(SequentialBehaviour, Sequence) {
   EXPECT_FALSE(chain->Tick());
   chain->Interrupt();
   EXPECT_TRUE(chain->Tick());
-  ASSERT_EQ(b1->GetBehaviourState(), BehaviourState::DONE);
-  ASSERT_EQ(b2->GetBehaviourState(), BehaviourState::INTERRUPTED);
-  ASSERT_EQ(b3->GetBehaviourState(), BehaviourState::INTERRUPTED);
-  ASSERT_EQ(b4->GetBehaviourState(), BehaviourState::INTERRUPTED);
+  ASSERT_EQ(b1->GetBehaviourState(), wom::BehaviourState::DONE);
+  ASSERT_EQ(b2->GetBehaviourState(), wom::BehaviourState::INTERRUPTED);
+  ASSERT_EQ(b3->GetBehaviourState(), wom::BehaviourState::INTERRUPTED);
+  ASSERT_EQ(b4->GetBehaviourState(), wom::BehaviourState::INTERRUPTED);
 }
 
 TEST(ConcurrentBehaviour, InheritsControls) {
-  HasBehaviour a, b;
+  wom::HasBehaviour a, b;
   auto         b1 = make<MockBehaviour>(), b2 = make<MockBehaviour>(), b3 = make<MockBehaviour>();
   b1->Controls(&a);
   b2->Controls(&b);
@@ -148,8 +148,8 @@ TEST(ConcurrentBehaviour, Race) {
   b1->SetDone();
   std::this_thread::sleep_for(std::chrono::milliseconds(5));
   ASSERT_TRUE(chain->Tick());
-  EXPECT_EQ(b1->GetBehaviourState(), BehaviourState::DONE);
-  EXPECT_EQ(b2->GetBehaviourState(), BehaviourState::INTERRUPTED);
+  EXPECT_EQ(b1->GetBehaviourState(), wom::BehaviourState::DONE);
+  EXPECT_EQ(b2->GetBehaviourState(), wom::BehaviourState::INTERRUPTED);
 }
 
 TEST(ConcurrentBehaviour, All) {
@@ -174,8 +174,8 @@ TEST(ConcurrentBehaviour, All) {
   b2->SetDone();
   std::this_thread::sleep_for(std::chrono::milliseconds(5));
   ASSERT_TRUE(chain->Tick());
-  EXPECT_EQ(b1->GetBehaviourState(), BehaviourState::DONE);
-  EXPECT_EQ(b2->GetBehaviourState(), BehaviourState::DONE);
+  EXPECT_EQ(b1->GetBehaviourState(), wom::BehaviourState::DONE);
+  EXPECT_EQ(b2->GetBehaviourState(), wom::BehaviourState::DONE);
 }
 
 TEST(ConcurrentBehaviour, Until) {
@@ -211,7 +211,7 @@ TEST(WaitFor, Waits) {
   ASSERT_FALSE(b->Tick());
   v = true;
   ASSERT_TRUE(b->Tick());
-  ASSERT_EQ(b->GetBehaviourState(), BehaviourState::DONE);
+  ASSERT_EQ(b->GetBehaviourState(), wom::BehaviourState::DONE);
 }
 
 TEST(WaitTime, Waits) {
@@ -222,7 +222,7 @@ TEST(WaitTime, Waits) {
   ASSERT_FALSE(b->Tick());
   std::this_thread::sleep_for(std::chrono::milliseconds(11));
   ASSERT_TRUE(b->Tick());
-  ASSERT_EQ(b->GetBehaviourState(), BehaviourState::DONE);
+  ASSERT_EQ(b->GetBehaviourState(), wom::BehaviourState::DONE);
 }
 
 TEST(If, Then) {
@@ -276,7 +276,7 @@ TEST(Switch, Decide) {
   chain->Tick();
 }
 
-TEST(Behaviour, FullChain) {
+TEST(wom::Behaviour, FullChain) {
   BehaviourScheduler s;
   MockSystem         a, b;
   auto               b1 = make<MockBehaviour>(), b2 = make<MockBehaviour>(), b3 = make<MockBehaviour>(),
@@ -358,8 +358,8 @@ TEST(Behaviour, FullChain) {
   ASSERT_FALSE(b3->IsRunning());
   ASSERT_FALSE(b4->IsRunning());
 
-  ASSERT_EQ(b2->GetBehaviourState(), BehaviourState::INTERRUPTED);
-  ASSERT_EQ(b4->GetBehaviourState(), BehaviourState::DONE);
+  ASSERT_EQ(b2->GetBehaviourState(), wom::BehaviourState::INTERRUPTED);
+  ASSERT_EQ(b4->GetBehaviourState(), wom::BehaviourState::DONE);
 
   ASSERT_EQ(a.GetActiveBehaviour(), nullptr);
   ASSERT_EQ(b.GetActiveBehaviour(), nullptr);

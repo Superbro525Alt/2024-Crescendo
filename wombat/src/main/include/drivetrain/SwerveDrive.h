@@ -54,7 +54,7 @@ namespace drivetrain {
     kManualTurn,
   };
 
-  class SwerveModule : public behaviour::HasBehaviour {
+  class SwerveModule : public behaviour::wom::HasBehaviour {
    public:
     explicit SwerveModule(SwerveModuleConfig config, SwerveModuleState state);
 
@@ -106,7 +106,7 @@ namespace drivetrain {
     kRobotRelative,
   };
 
-  class Swerve : public behaviour::HasBehaviour {
+  class Swerve : public behaviour::wom::HasBehaviour {
    public:
     explicit Swerve(SwerveConfig config, SwerveState state, wom::vision::Limelight *vision);
     explicit Swerve(SwerveConfig config, SwerveState state, Pigeon2 *gyro);

@@ -35,7 +35,7 @@ namespace subsystems {
 
   enum class ArmState { kIdle, kAngle, kRaw, kVelocity };
 
-  class Arm : public behaviour::HasBehaviour {
+  class Arm : public behaviour::wom::HasBehaviour {
    public:
     Arm(ArmConfig config);
 

@@ -57,7 +57,7 @@ enum class ExampleState {
 // classes should be named in upper camel case
 // all subsystems need a class which inherits from the has behaviour class
 
-class Example : public behaviour::HasBehaviour {
+class Example : public behaviour::wom::HasBehaviour {
   // the public field has data which can be accessed from any instance of the
   // class
 

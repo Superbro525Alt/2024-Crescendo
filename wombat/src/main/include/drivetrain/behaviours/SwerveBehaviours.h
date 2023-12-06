@@ -16,7 +16,7 @@ namespace wom {
 namespace drivetrain {
   namespace behaviours {
 
-    class FieldRelativeSwerveDrive : public behaviour::Behaviour {
+    class FieldRelativeSwerveDrive : public behaviour::wom::Behaviour {
      public:
       explicit FieldRelativeSwerveDrive(wom::drivetrain::Swerve *swerve, frc::XboxController &driver, frc::Field2d *field = NULL);
 

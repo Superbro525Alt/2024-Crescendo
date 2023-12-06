@@ -8,7 +8,7 @@
 namespace wom {
 namespace drivetrain {
   namespace behaviours {
-    class TankDrive : public behaviour::Behaviour {
+    class TankDrive : public behaviour::wom::Behaviour {
      public:
       TankDrive(wom::drivetrain::Drivetrain *drivebase, frc::XboxController &driver);
 

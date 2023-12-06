@@ -3,7 +3,7 @@
 #include "behaviour/Behaviour.h"
 #include "example/Example.h"
 
-class ExampleBehaviour : public behaviour::Behaviour {
+class ExampleBehaviour : public behaviour::wom::Behaviour {
  public:
   ExampleBehaviour(Example *_example);
   ~ExampleBehaviour();

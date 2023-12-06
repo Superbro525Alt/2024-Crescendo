@@ -2,7 +2,7 @@
 
 Behaviours are Curtin FRC's solution to the control problem. In a robot where many actions can occur at once, how do we make sure only one place has control of a system at a particular time? Moreover, how can we combine small elements of control into one much larger, cohesive functionality - such as chaining small autonomous actions together to make a full autonomous routine?
 
-A Behaviour is a small action or piece of work that describes how to control a robot system or collection of systems. Examples may include:
+A wom::Behaviour is a small action or piece of work that describes how to control a robot system or collection of systems. Examples may include:
 - Teleoperated control of the drivetrain
 - Automatic spinup of the shooter
 - Setting the elevator to go to a specific height
@@ -12,23 +12,23 @@ A Behaviour is a small action or piece of work that describes how to control a r
 The key to Behaviours is that they are *small*, and are used together to build into a much larger system.
 
 ## Implementing Behaviours
-Behaviours are created by inheriting from the `Behaviour` class. Let's look at an example Behaviour that prints a message when it starts, and then immediately stops.
+Behaviours are created by inheriting from the `wom::Behaviour` class. Let's look at an example wom::Behaviour that prints a message when it starts, and then immediately stops.
 
 ```cpp
 // PrintBehaviour.h
 #pragma once
 #include <behaviour/Behaviour.h>
 
-class PrintBehaviour : public behaviour::Behaviour {
+class PrintBehaviour : public behaviour::wom::Behaviour {
  public:
   PrintBehaviour(std::string message);
 
-  // OnStart and OnStop are called as when the Behaviour is initially started,
+  // OnStart and OnStop are called as when the wom::Behaviour is initially started,
   // then again when the behaviour is finished. Both of these overrides are
   // optional, but OnTick is mandatory.
   void OnStart() override;
   // OnTick is called periodically (over and over again) while the behaviour
-  // is running. This is where most logic goes, and also where the Behaviour
+  // is running. This is where most logic goes, and also where the wom::Behaviour
   // decides whether it is done by calling SetDone().
   void OnTick(units::time::second_t dt) override;
   void OnStop() override;
@@ -40,12 +40,12 @@ class PrintBehaviour : public behaviour::Behaviour {
 // PrintBehaviour.cpp
 #include "PrintBehaviour.h"
 
-using namespace behaviour;
+;
 
-// Note the call to Behaviour(std::string), which is how you give a Behaviour
+// Note the call to wom::Behaviour(std::string), which is how you give a wom::Behaviour
 // a name that can be read out on Shuffleboard / in the console. You can
 // also call it without a string to make an unnamed behaviour.
-PrintBehaviour::PrintBehaviour(std::string message) : _message(message), Behaviour("PrintBehaviour(" + message + ")") {}
+PrintBehaviour::PrintBehaviour(std::string message) : _message(message), wom::Behaviour("PrintBehaviour(" + message + ")") {}
 
 void PrintBehaviour::OnStart() {
   // When I start, I print my message
@@ -69,14 +69,14 @@ BehaviourScheduler::GetInstance()->Schedule(behaviour);
 ```
 
 ### Controlling systems
-Let's look at how we might control a system with Behaviours. For this example, we're going to create a Behaviour that tells a flywheel shooter to spin up to a certain speed. 
+Let's look at how we might control a system with Behaviours. For this example, we're going to create a wom::Behaviour that tells a flywheel shooter to spin up to a certain speed. 
 
-First, we need to make our shooter system able to have a Behaviour. To do this, we make it implement from `HasBehaviour` - that's it, no methods to override or anything else.
+First, we need to make our shooter system able to have a wom::Behaviour. To do this, we make it implement from `wom::HasBehaviour` - that's it, no methods to override or anything else.
 
 ```cpp
 // Shooter.h
 
-class Shooter : public HasBehaviour {
+class Shooter : public wom::HasBehaviour {
   // ...
 };
 ```
@@ -89,7 +89,7 @@ void Robot::RobotInit() {
 }
 ```
 
-Next, we create our Behaviour. Just for fun, let's do some PIDF while we're at it.
+Next, we create our wom::Behaviour. Just for fun, let's do some PIDF while we're at it.
 
 ```cpp
 // ShooterSpinup.h
@@ -98,7 +98,7 @@ Next, we create our Behaviour. Just for fun, let's do some PIDF while we're at i
 #include <PIDController.h>
 #include <units/angular_velocity.h>
 
-class ShooterSpinup : public behaviour::Behaviour {
+class ShooterSpinup : public behaviour::wom::Behaviour {
  public:
   ShooterSpinup(Shooter &s, units::rad_per_s speed, bool hold);
 
@@ -113,9 +113,9 @@ class ShooterSpinup : public behaviour::Behaviour {
 // ShooterSpinup.cpp
 #include "ShooterSpinup.h"
 
-using namespace behaviour;
+;
 
-ShooterSpinup::ShooterSpinup(Shooter &s, units::rad_per_s speed, bool hold) : _shooter(s), _speed(speed), _pid(s.pid_settings), _hold(hold), Behaviour("Shooter Spinup") {
+ShooterSpinup::ShooterSpinup(Shooter &s, units::rad_per_s speed, bool hold) : _shooter(s), _speed(speed), _pid(s.pid_settings), _hold(hold), wom::Behaviour("Shooter Spinup") {
   // By saying 'controls', we say that we're controlling the Shooter
   // to make sure that we take over exclusive control of it. That way,
   // no one else is telling it to do something different.
@@ -249,7 +249,7 @@ Complex, right? Let's look at how we break it down. First of all, notice that it
 We can use the steps we've already outlined to build our overall behaviour sequence that describes the autonomous routine. 
 Let's go ahead and mock up what we think our autonomous routine above will look like in code:
 ```cpp
-Behaviour::ptr MyAutoRoutine() {
+wom::Behaviour::ptr MyAutoRoutine() {
   return (
     make<ShooterSpinup>(shooter, 500_rpm, true) 
       ->Until(

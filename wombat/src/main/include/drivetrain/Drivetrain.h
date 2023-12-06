@@ -34,7 +34,7 @@ namespace drivetrain {
     kTank,
   };
 
-  class Drivetrain : public behaviour::HasBehaviour {
+  class Drivetrain : public behaviour::wom::HasBehaviour {
    public:
     Drivetrain(DrivetrainConfig *config);
     ~Drivetrain();

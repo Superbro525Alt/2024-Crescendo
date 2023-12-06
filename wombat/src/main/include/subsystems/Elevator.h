@@ -35,7 +35,7 @@ namespace subsystems {
     void WriteNT(std::shared_ptr<nt::NetworkTable> table);
   };
 
-  class Elevator : public behaviour::HasBehaviour {
+  class Elevator : public behaviour::wom::HasBehaviour {
    public:
     Elevator(ElevatorConfig params);
 

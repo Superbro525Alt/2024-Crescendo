@@ -17,13 +17,14 @@
 
 #include "HasBehaviour.h"
 
-namespace behaviour {
-enum class BehaviourState { INITIALISED, RUNNING, DONE, TIMED_OUT, INTERRUPTED };
+namespace wom {
+namespace behaviour { 
+enum class wom::BehaviourState { INITIALISED, RUNNING, DONE, TIMED_OUT, INTERRUPTED };
 
 class SequentialBehaviour;
 
 /**
- * A Behaviour is a single component in a chain of actions. Behaviours are used
+ * A wom::Behaviour is a single component in a chain of actions. Behaviours are used
  * to implement robot functionality and may include everything from running the
  * intake to following trajectories and scoring game pieces.
  *
@@ -32,82 +33,82 @@ class SequentialBehaviour;
  *
  * For examples, see the BEHAVIOURS.md document.
  */
-class Behaviour : public std::enable_shared_from_this<Behaviour> {
+class wom::Behaviour : public std::enable_shared_from_this<wom::Behaviour> {
  public:
-  using ptr = std::shared_ptr<Behaviour>;
+  using ptr = std::shared_ptr<wom::Behaviour>;
 
-  Behaviour(std::string name = "<unnamed behaviour>", units::time::second_t period = 20_ms);
-  ~Behaviour();
+  wom::Behaviour(std::string name = "<unnamed behaviour>", units::time::second_t period = 20_ms);
+  ~wom::Behaviour();
 
   /**
-   * @return std::string The name of the Behaviour
+   * @return std::string The name of the wom::Behaviour
    */
   virtual std::string GetName() const;
 
   /**
-   * Called when the Behaviour first starts
+   * Called when the wom::Behaviour first starts
    */
   virtual void OnStart(){};
 
   /**
-   * Called periodically as the Behaviour runs
+   * Called periodically as the wom::Behaviour runs
    * @param dt The time difference between the current call
    * and the previous call of OnTick
    */
   virtual void OnTick(units::time::second_t dt) = 0;
 
   /**
-   * Called when the Behaviour stops running
+   * Called when the wom::Behaviour stops running
    */
   virtual void OnStop(){};
 
   /**
-   * Set the period of the Behaviour. Note this only affects the Behaviour
+   * Set the period of the wom::Behaviour. Note this only affects the wom::Behaviour
    * when scheduled using the BehaviourScheduler, or when used in as part
    * of a concurrent behaviour group (& or |)
    */
   void SetPeriod(units::time::second_t period);
 
   /**
-   * @return units::time::second_t The loop period of the Behaviour.
+   * @return units::time::second_t The loop period of the wom::Behaviour.
    */
   units::time::second_t GetPeriod() const;
 
   /**
-   * @return units::time::second_t The amount of time the Behaviour has been
+   * @return units::time::second_t The amount of time the wom::Behaviour has been
    * running for.
    */
   units::time::second_t GetRunTime() const;
 
   /**
-   * Specify what systems this Behaviour Controls. Controls means a physical
+   * Specify what systems this wom::Behaviour Controls. Controls means a physical
    * output, a demand, or some other controlling method. When Behaviours run,
-   * only one Behaviour at a time may have control over a system.
+   * only one wom::Behaviour at a time may have control over a system.
    */
-  void Controls(HasBehaviour *sys);
+  void Controls(wom::HasBehaviour *sys);
 
   /**
-   * Inherit controlled systems from another Behaviour.
+   * Inherit controlled systems from another wom::Behaviour.
    */
-  void Inherit(Behaviour &bhvr);
+  void Inherit(wom::Behaviour &bhvr);
 
   /**
-   * Set a timeout on this Behaviour. If the Behaviour runs longer than the
+   * Set a timeout on this wom::Behaviour. If the wom::Behaviour runs longer than the
    * timeout, it will be interrupted.
    */
   ptr WithTimeout(units::time::second_t timeout);
 
   /**
-   * @return wpi::SmallPtrSetImpl<HasBehaviour *>& The systems controlled by
+   * @return wpi::SmallPtrSetImpl<wom::HasBehaviour *>& The systems controlled by
    * this behaviour.
    */
-  wpi::SmallPtrSetImpl<HasBehaviour *> &GetControlled();
+  wpi::SmallPtrSetImpl<wom::HasBehaviour *> &GetControlled();
 
   /**
-   * @return BehaviourState The current state of the behaviour
-   * @see BehaviourState
+   * @return wom::BehaviourState The current state of the behaviour
+   * @see wom::BehaviourState
    */
-  BehaviourState GetBehaviourState() const;
+  wom::BehaviourState GetBehaviourState() const;
 
   /**
    * Interrupt this behaviour
@@ -140,16 +141,16 @@ class Behaviour : public std::enable_shared_from_this<Behaviour> {
   /**
    * Run this behaviour until another has finished.
    */
-  Behaviour::ptr Until(Behaviour::ptr other);
+  wom::Behaviour::ptr Until(wom::Behaviour::ptr other);
 
  private:
-  void Stop(BehaviourState new_state);
+  void Stop(wom::BehaviourState new_state);
 
   std::string                 _bhvr_name;
   units::time::second_t       _bhvr_period = 20_ms;
-  std::atomic<BehaviourState> _bhvr_state;
+  std::atomic<wom::BehaviourState> _bhvr_state;
 
-  wpi::SmallSet<HasBehaviour *, 8> _bhvr_controls;
+  wpi::SmallSet<wom::HasBehaviour *, 8> _bhvr_controls;
 
   double                _bhvr_time    = 0;
   units::time::second_t _bhvr_timer   = 0_s;
@@ -157,7 +158,7 @@ class Behaviour : public std::enable_shared_from_this<Behaviour> {
 };
 
 /**
- * Shorthand function to create a shared_ptr for a Behaviour.
+ * Shorthand function to create a shared_ptr for a wom::Behaviour.
  */
 template <class T, class... Args>
 std::shared_ptr<T> make(Args &&...args) {
@@ -169,7 +170,7 @@ std::shared_ptr<T> make(Args &&...args) {
  * create a sequential chain of execution. Usually, you don't
  * want to invoke this class directly, but instead use b1 << b2.
  */
-class SequentialBehaviour : public Behaviour {
+class SequentialBehaviour : public wom::Behaviour {
  public:
   void Add(ptr next);
 
@@ -182,7 +183,7 @@ class SequentialBehaviour : public Behaviour {
   std::deque<ptr> _queue;
 };
 
-inline std::shared_ptr<SequentialBehaviour> operator<<(Behaviour::ptr a, Behaviour::ptr b) {
+inline std::shared_ptr<SequentialBehaviour> operator<<(wom::Behaviour::ptr a, wom::Behaviour::ptr b) {
   auto seq = std::make_shared<SequentialBehaviour>();
   seq->Add(a);
   seq->Add(b);
@@ -190,7 +191,7 @@ inline std::shared_ptr<SequentialBehaviour> operator<<(Behaviour::ptr a, Behavio
 }
 
 inline std::shared_ptr<SequentialBehaviour> operator<<(std::shared_ptr<SequentialBehaviour> a,
-                                                       Behaviour::ptr                       b) {
+                                                       wom::Behaviour::ptr                       b) {
   a->Add(b);
   return a;
 }
@@ -211,11 +212,11 @@ enum class ConcurrentBehaviourReducer { ALL, ANY, FIRST };
  * Usually, you don't want to call this directly, but instead use b1 & b2 or b1
  * | b2 to create a concurrent group.
  */
-class ConcurrentBehaviour : public Behaviour {
+class ConcurrentBehaviour : public wom::Behaviour {
  public:
   ConcurrentBehaviour(ConcurrentBehaviourReducer reducer);
 
-  void Add(Behaviour::ptr behaviour);
+  void Add(wom::Behaviour::ptr behaviour);
 
   std::string GetName() const override;
 
@@ -225,7 +226,7 @@ class ConcurrentBehaviour : public Behaviour {
 
  private:
   ConcurrentBehaviourReducer              _reducer;
-  std::vector<std::shared_ptr<Behaviour>> _children;
+  std::vector<std::shared_ptr<wom::Behaviour>> _children;
   std::mutex                              _children_finished_mtx;
   std::vector<bool>                       _children_finished;
   std::vector<std::thread>                _threads;
@@ -235,7 +236,7 @@ class ConcurrentBehaviour : public Behaviour {
  * Create a concurrent behaviour group, waiting for all behaviours
  * to finish before moving on.
  */
-inline std::shared_ptr<ConcurrentBehaviour> operator&(Behaviour::ptr a, Behaviour::ptr b) {
+inline std::shared_ptr<ConcurrentBehaviour> operator&(wom::Behaviour::ptr a, wom::Behaviour::ptr b) {
   auto conc = std::make_shared<ConcurrentBehaviour>(ConcurrentBehaviourReducer::ALL);
   conc->Add(a);
   conc->Add(b);
@@ -247,7 +248,7 @@ inline std::shared_ptr<ConcurrentBehaviour> operator&(Behaviour::ptr a, Behaviou
  * be interrupted as soon as any members of the group are finished (the
  * behaviours are 'raced' against each other).
  */
-inline std::shared_ptr<ConcurrentBehaviour> operator|(Behaviour::ptr a, Behaviour::ptr b) {
+inline std::shared_ptr<ConcurrentBehaviour> operator|(wom::Behaviour::ptr a, wom::Behaviour::ptr b) {
   auto conc = std::make_shared<ConcurrentBehaviour>(ConcurrentBehaviourReducer::ANY);
   conc->Add(a);
   conc->Add(b);
@@ -257,7 +258,7 @@ inline std::shared_ptr<ConcurrentBehaviour> operator|(Behaviour::ptr a, Behaviou
 /**
  * If allows decisions to be made in a behaviour chain.
  */
-struct If : public Behaviour {
+struct If : public wom::Behaviour {
  public:
   /**
    * Create a new If decision behaviour.
@@ -274,12 +275,12 @@ struct If : public Behaviour {
   /**
    * Set the behaviour to be called if the condition is true
    */
-  std::shared_ptr<If> Then(Behaviour::ptr b);
+  std::shared_ptr<If> Then(wom::Behaviour::ptr b);
 
   /**
    * Set the behaviour to be called if the condition is false
    */
-  std::shared_ptr<If> Else(Behaviour::ptr b);
+  std::shared_ptr<If> Else(wom::Behaviour::ptr b);
 
   void OnStart() override;
   void OnTick(units::time::second_t dt) override;
@@ -287,7 +288,7 @@ struct If : public Behaviour {
  private:
   std::function<bool()> _condition;
   bool                  _value;
-  Behaviour::ptr        _then, _else;
+  wom::Behaviour::ptr        _then, _else;
 };
 
 /**
@@ -297,7 +298,7 @@ struct If : public Behaviour {
  * @tparam T The type of parameter.
  */
 template <typename T = std::monostate>
-struct Switch : public Behaviour {
+struct Switch : public wom::Behaviour {
  public:
   /**
    * Create a new Switch behaviour, with a given parameter
@@ -316,7 +317,7 @@ struct Switch : public Behaviour {
    * @param condition The function yielding true if this is the correct option
    * @param b The behaviour to call if this option is provided.
    */
-  std::shared_ptr<Switch> When(std::function<bool(T &)> condition, Behaviour::ptr b) {
+  std::shared_ptr<Switch> When(std::function<bool(T &)> condition, wom::Behaviour::ptr b) {
     _options.push_back(std::pair(condition, b));
     Inherit(*b);
     return std::reinterpret_pointer_cast<Switch<T>>(shared_from_this());
@@ -328,7 +329,7 @@ struct Switch : public Behaviour {
    * @param value The option value, to be checked against the parameter
    * @param b The behaviour to call if this option is provided.
    */
-  std::shared_ptr<Switch> When(T value, Behaviour::ptr b) {
+  std::shared_ptr<Switch> When(T value, wom::Behaviour::ptr b) {
     return When([value](T &v) { return value == v; }, b);
   }
 
@@ -336,7 +337,7 @@ struct Switch : public Behaviour {
    * Set the default branch for the Switch chain
    * @param b The behaviour to call if no other When's match.
    */
-  std::shared_ptr<Switch> Otherwise(Behaviour::ptr b = nullptr) {
+  std::shared_ptr<Switch> Otherwise(wom::Behaviour::ptr b = nullptr) {
     return When([](T &v) { return true; }, b);
   }
 
@@ -362,7 +363,7 @@ struct Switch : public Behaviour {
   }
 
   void OnStop() override {
-    if (GetBehaviourState() != BehaviourState::DONE) {
+    if (GetBehaviourState() != wom::BehaviourState::DONE) {
       for (auto &opt : _options) {
         opt.second->Interrupt();
       }
@@ -371,8 +372,8 @@ struct Switch : public Behaviour {
 
  private:
   std::function<T()>                                                       _fn;
-  wpi::SmallVector<std::pair<std::function<bool(T &)>, Behaviour::ptr>, 4> _options;
-  Behaviour::ptr                                                           _locked = nullptr;
+  wpi::SmallVector<std::pair<std::function<bool(T &)>, wom::Behaviour::ptr>, 4> _options;
+  wom::Behaviour::ptr                                                           _locked = nullptr;
 };
 
 /**
@@ -388,7 +389,7 @@ struct Decide : public Switch<std::monostate> {
    * @param condition The function yielding true if this is the correct option
    * @param b The behaviour to call if this option is provided.
    */
-  std::shared_ptr<Decide> When(std::function<bool()> condition, Behaviour::ptr b) {
+  std::shared_ptr<Decide> When(std::function<bool()> condition, wom::Behaviour::ptr b) {
     return std::reinterpret_pointer_cast<Decide>(Switch::When([condition](auto) { return condition(); }, b));
   }
 };
@@ -396,7 +397,7 @@ struct Decide : public Switch<std::monostate> {
 /**
  * The WaitFor behaviour will do nothing until a condition is true.
  */
-struct WaitFor : public Behaviour {
+struct WaitFor : public wom::Behaviour {
  public:
   /**
    * Create a new WaitFor behaviour
@@ -413,7 +414,7 @@ struct WaitFor : public Behaviour {
 /**
  * The WaitTime behaviour will do nothing until a time period has elapsed.
  */
-struct WaitTime : public Behaviour {
+struct WaitTime : public wom::Behaviour {
  public:
   /**
    * Create a new WaitTime behaviour
@@ -435,7 +436,7 @@ struct WaitTime : public Behaviour {
   units::time::second_t                  _time;
 };
 
-struct Print : public Behaviour {
+struct Print : public wom::Behaviour {
  public:
   Print(std::string message);
 
@@ -444,4 +445,5 @@ struct Print : public Behaviour {
  private:
   std::string _message;
 };
-}  // namespace behaviour
+}  // namespace wom {
+}

@@ -2,12 +2,12 @@
 
 #include "behaviour/Behaviour.h"
 
-using namespace behaviour;
+;
 
-void HasBehaviour::SetDefaultBehaviour(std::function<std::shared_ptr<Behaviour>(void)> fn) {
+void wom::HasBehaviour::SetDefaultBehaviour(std::function<std::shared_ptr<wom::Behaviour>(void)> fn) {
   _default_behaviour_producer = fn;
 }
 
-std::shared_ptr<Behaviour> HasBehaviour::GetActiveBehaviour() {
+std::shared_ptr<wom::Behaviour> wom::HasBehaviour::GetActiveBehaviour() {
   return _active_behaviour;
 }

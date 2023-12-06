@@ -1,81 +1,79 @@
 #include "behaviour/Behaviour.h"
 
-using namespace behaviour;
-
-// Behaviour
-Behaviour::Behaviour(std::string name, units::time::second_t period)
-    : _bhvr_name(name), _bhvr_period(period), _bhvr_state(BehaviourState::INITIALISED) {}
-Behaviour::~Behaviour() {
+// wom::Behaviour
+wom::Behaviour::wom::Behaviour(std::string name, units::time::second_t period)
+    : _bhvr_name(name), _bhvr_period(period), _bhvr_state(wom::BehaviourState::INITIALISED) {}
+wom::Behaviour::~wom::Behaviour() {
   if (!IsFinished()) Interrupt();
 }
 
-std::string Behaviour::GetName() const {
+std::string wom::Behaviour::GetName() const {
   return _bhvr_name;
 }
 
-void Behaviour::SetPeriod(units::time::second_t Period) {
+void wom::Behaviour::SetPeriod(units::time::second_t Period) {
   _bhvr_period = Period;
 }
 
-units::time::second_t Behaviour::GetPeriod() const {
+units::time::second_t wom::Behaviour::GetPeriod() const {
   return _bhvr_period;
 }
 
-units::time::second_t Behaviour::GetRunTime() const {
+units::time::second_t wom::Behaviour::GetRunTime() const {
   return _bhvr_timer;
 }
 
-void Behaviour::Controls(HasBehaviour *sys) {
+void wom::Behaviour::Controls(wom::HasBehaviour *sys) {
   if (sys != nullptr) _bhvr_controls.insert(sys);
 }
 
-void Behaviour::Inherit(Behaviour &bhvr) {
+void wom::Behaviour::Inherit(wom::Behaviour &bhvr) {
   for (auto c : bhvr.GetControlled()) Controls(c);
 }
 
-Behaviour::ptr Behaviour::WithTimeout(units::time::second_t timeout) {
+wom::Behaviour::ptr wom::Behaviour::WithTimeout(units::time::second_t timeout) {
   _bhvr_timeout = timeout;
   return shared_from_this();
 }
 
-wpi::SmallPtrSetImpl<HasBehaviour *> &Behaviour::GetControlled() {
+wpi::SmallPtrSetImpl<wom::HasBehaviour *> &wom::Behaviour::GetControlled() {
   return _bhvr_controls;
 }
 
-BehaviourState Behaviour::GetBehaviourState() const {
+wom::BehaviourState wom::Behaviour::GetBehaviourState() const {
   return _bhvr_state;
 }
 
-void Behaviour::Interrupt() {
-  Stop(BehaviourState::INTERRUPTED);
+void wom::Behaviour::Interrupt() {
+  Stop(wom::BehaviourState::INTERRUPTED);
 }
 
-void Behaviour::SetDone() {
-  Stop(BehaviourState::DONE);
+void wom::Behaviour::SetDone() {
+  Stop(wom::BehaviourState::DONE);
 }
 
-bool Behaviour::Tick() {
-  if (_bhvr_state == BehaviourState::INITIALISED) {
+bool wom::Behaviour::Tick() {
+  if (_bhvr_state == wom::BehaviourState::INITIALISED) {
     _bhvr_time  = frc::RobotController::GetFPGATime();
-    _bhvr_state = BehaviourState::RUNNING;
+    _bhvr_state = wom::BehaviourState::RUNNING;
     _bhvr_timer = 0_s;
 
     OnStart();
   }
 
-  if (_bhvr_state == BehaviourState::RUNNING) {
+  if (_bhvr_state == wom::BehaviourState::RUNNING) {
     uint64_t now = frc::RobotController::GetFPGATime();
     auto     dt  = static_cast<double>(now - _bhvr_time) / 1000000 * 1_s;
     _bhvr_time   = now;
     _bhvr_timer += dt;
 
     if (dt > 2 * _bhvr_period) {
-      std::cerr << "Behaviour missed deadline. Reduce Period. Dt=" << dt.value()
+      std::cerr << "wom::Behaviour missed deadline. Reduce Period. Dt=" << dt.value()
                 << " Dt(deadline)=" << (2 * _bhvr_period).value() << ". Bhvr: " << GetName() << std::endl;
     }
 
     if (_bhvr_timeout.value() > 0 && _bhvr_timer > _bhvr_timeout)
-      Stop(BehaviourState::TIMED_OUT);
+      Stop(wom::BehaviourState::TIMED_OUT);
     else
       OnTick(dt);
   }
@@ -83,19 +81,19 @@ bool Behaviour::Tick() {
   return IsFinished();
 }
 
-bool Behaviour::IsRunning() const {
-  return _bhvr_state == BehaviourState::RUNNING;
+bool wom::Behaviour::IsRunning() const {
+  return _bhvr_state == wom::BehaviourState::RUNNING;
 }
 
-bool Behaviour::IsFinished() const {
-  return _bhvr_state != BehaviourState::INITIALISED && _bhvr_state != BehaviourState::RUNNING;
+bool wom::Behaviour::IsFinished() const {
+  return _bhvr_state != wom::BehaviourState::INITIALISED && _bhvr_state != wom::BehaviourState::RUNNING;
 }
 
-void Behaviour::Stop(BehaviourState new_state) {
-  if (_bhvr_state.exchange(new_state) == BehaviourState::RUNNING) OnStop();
+void wom::Behaviour::Stop(wom::BehaviourState new_state) {
+  if (_bhvr_state.exchange(new_state) == wom::BehaviourState::RUNNING) OnStop();
 }
 
-Behaviour::ptr Behaviour::Until(Behaviour::ptr other) {
+wom::Behaviour::ptr wom::Behaviour::Until(wom::Behaviour::ptr other) {
   // return shared_from_this() | other;
   auto conc = make<ConcurrentBehaviour>(ConcurrentBehaviourReducer::FIRST);
   conc->Add(other);
@@ -103,7 +101,7 @@ Behaviour::ptr Behaviour::Until(Behaviour::ptr other) {
   return conc;
 }
 
-// Sequential Behaviour
+// Sequential wom::Behaviour
 void SequentialBehaviour::Add(ptr next) {
   _queue.push_back(next);
   Inherit(*next);
@@ -130,7 +128,7 @@ void SequentialBehaviour::OnTick(units::time::second_t dt) {
 }
 
 void SequentialBehaviour::OnStop() {
-  if (GetBehaviourState() != BehaviourState::DONE) {
+  if (GetBehaviourState() != wom::BehaviourState::DONE) {
     while (!_queue.empty()) {
       _queue.front()->Interrupt();
       _queue.pop_front();
@@ -140,9 +138,9 @@ void SequentialBehaviour::OnStop() {
 
 // ConcurrentBehaviour
 ConcurrentBehaviour::ConcurrentBehaviour(ConcurrentBehaviourReducer reducer)
-    : Behaviour(), _reducer(reducer) {}
+    : wom::Behaviour(), _reducer(reducer) {}
 
-void ConcurrentBehaviour::Add(Behaviour::ptr behaviour) {
+void ConcurrentBehaviour::Add(wom::Behaviour::ptr behaviour) {
   for (auto c : behaviour->GetControlled()) {
     auto &controls = GetControlled();
     if (controls.find(c) != controls.end()) {
@@ -219,13 +217,13 @@ void ConcurrentBehaviour::OnStop() {
 If::If(std::function<bool()> condition) : _condition(condition) {}
 If::If(bool v) : _condition([v]() { return v; }) {}
 
-std::shared_ptr<If> If::Then(Behaviour::ptr b) {
+std::shared_ptr<If> If::Then(wom::Behaviour::ptr b) {
   _then = b;
   Inherit(*b);
   return std::reinterpret_pointer_cast<If>(shared_from_this());
 }
 
-std::shared_ptr<If> If::Else(Behaviour::ptr b) {
+std::shared_ptr<If> If::Else(wom::Behaviour::ptr b) {
   _else = b;
   Inherit(*b);
   return std::reinterpret_pointer_cast<If>(shared_from_this());
@@ -236,7 +234,7 @@ void If::OnStart() {
 }
 
 void If::OnTick(units::time::second_t dt) {
-  Behaviour::ptr _active = _value ? _then : _else;
+  wom::Behaviour::ptr _active = _value ? _then : _else;
   if (_active) _active->Tick();
   if (!_active || _active->IsFinished()) SetDone();
 

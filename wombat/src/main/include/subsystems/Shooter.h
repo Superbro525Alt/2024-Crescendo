@@ -21,7 +21,7 @@ namespace subsystems {
     units::ampere_t                                               currentLimit;
   };
 
-  class Shooter : public behaviour::HasBehaviour {
+  class Shooter : public behaviour::wom::HasBehaviour {
    public:
     Shooter(std::string path, ShooterParams params);
 

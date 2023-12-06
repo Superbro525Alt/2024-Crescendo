@@ -31,4 +31,4 @@ using namespace wom::drivetrain::behaviours;
 
 using namespace wom::vision;
 
-using namespace behaviour;
+using namespace wom::behaviour;

@@ -5,6 +5,7 @@
 #include "Behaviour.h"
 #include "HasBehaviour.h"
 
+namespace wom {
 namespace behaviour {
 
 /**
@@ -29,13 +30,13 @@ class BehaviourScheduler {
    * Register a system with the behaviour scheduler. A system must be registered
    * for it to be controlled by behaviours.
    */
-  void Register(HasBehaviour *system);
+  void Register(wom::HasBehaviour *system);
 
   /**
    * Schedule a behaviour, interrupting all behaviours currently running that
    * control the same system.
    */
-  void Schedule(Behaviour::ptr behaviour);
+  void Schedule(wom::Behaviour::ptr behaviour);
 
   /**
    * Update the BehaviourScheduler. Must be called regularly, e.g. RobotPeriodic
@@ -49,8 +50,9 @@ class BehaviourScheduler {
   void InterruptAll();
 
  private:
-  std::vector<HasBehaviour *> _systems;
+  std::vector<wom::HasBehaviour *> _systems;
   std::recursive_mutex        _active_mtx;
   std::vector<std::thread>    _threads;
 };
-}  // namespace behaviour
+}  // namespace wom {
+}
