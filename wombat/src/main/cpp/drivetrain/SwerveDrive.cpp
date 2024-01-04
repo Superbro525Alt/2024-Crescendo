@@ -76,6 +76,8 @@ void wom::drivetrain::SwerveModule::PIDControl(units::second_t dt, units::radian
       0_Nm, _config.rotationGearbox.encoder->GetEncoderAngularVelocity());
   _rotationalVelocityPID.SetSetpoint(angularVelocity);
   voltageRotation = _rotationalVelocityPID.Calculate(angularVelocity, dt, feedforwardRotationalVelocity);
+  std::cout << "Rotation Voltage" << voltageRotation.value() << std::endl;
+
   if (voltageRotation > 11_V) {
     voltageRotation = 11_V;
   }
@@ -84,12 +86,14 @@ void wom::drivetrain::SwerveModule::PIDControl(units::second_t dt, units::radian
     voltageRotation = -voltageRotation;
   }
   _config.rotationGearbox.transmission->SetVoltage(voltageRotation);
-  std::cout << "Rotation Voltage" << voltageRotation.value() << std::endl;
 
   units::volt_t feedforwardMovementVelocity = _config.movementGearbox.motor.Voltage(
       0_Nm, _config.movementGearbox.encoder->GetEncoderAngularVelocity());
   _movementVelocityPID.SetSetpoint(velocity);
   voltageMovement = _movementVelocityPID.Calculate(velocity, dt, feedforwardMovementVelocity);
+
+  std::cout << "Movement Voltage" << voltageMovement.value() << std::endl;
+
   if (voltageMovement > 11_V) {
     voltageMovement = 11_V;
   }
@@ -97,8 +101,9 @@ void wom::drivetrain::SwerveModule::PIDControl(units::second_t dt, units::radian
   if (voltageMovement < 0_V) {
     voltageMovement = -voltageMovement;
   }
+  
   _config.movementGearbox.transmission->SetVoltage(voltageMovement);
-  std::cout << "Movement Voltage" << voltageMovement.value() << std::endl;
+  // _config.movementGearbox.transmission->SetVoltage(5_V);
 }
 
 units::meters_per_second_t wom::drivetrain::SwerveModule::GetSpeed() {
