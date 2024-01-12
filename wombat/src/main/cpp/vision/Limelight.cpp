@@ -24,6 +24,8 @@ std::pair<double, double> wom::vision::Limelight::GetOffset() {
   return offset;
 }
 
+
+
 std::vector<double> wom::vision::Limelight::GetAprilTagData(
     LimelightAprilTagData dataType) {
   std::string dataName;

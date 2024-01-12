@@ -235,10 +235,10 @@ class SwerveDrive : public behaviour::HasBehaviour {
   units::radian_t _angle;
   units::meters_per_second_t _speed;
 
-  double frontLeftEncoderOffset = -143.26171875;
-  double frontRightEncoderOffset = 167.87109375;
-  double backLeftEncoderOffset = -316.669921875;
-  double backRightEncoderOffset = -119.619140625;
+  // double frontLeftEncoderOffset = -143.26171875;
+  // double frontRightEncoderOffset = 167.87109375;
+  // double backLeftEncoderOffset = -316.669921875;
+  // double backRightEncoderOffset = -119.619140625;
 };
 }  // namespace drivetrain
 }  // namespace wom
