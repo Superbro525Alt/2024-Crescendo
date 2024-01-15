@@ -35,8 +35,8 @@ class Robot : public frc::TimedRobot {
   void SimulationPeriodic() override;
 
  private:
-  behaviour::BehaviourScheduler* sched;
   RobotMap robotmap;
+  wom::BehaviourScheduler* sched = wom::BehaviourScheduler::GetInstance();
   frc::EventLoop loop;
 
   frc::SendableChooser<std::string> m_chooser;

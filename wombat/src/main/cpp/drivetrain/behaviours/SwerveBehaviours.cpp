@@ -29,17 +29,12 @@ ManualDrivebase::ManualDrivebase(wom::drivetrain::SwerveDrive* swerveDrivebase,
 void ManualDrivebase::OnStart() {
   _swerveDrivebase->OnStart();
   _swerveDrivebase->SetAccelerationLimit(6_mps_sq);
-  std::cout << "Manual Drivebase Start" << std::endl;
 }
 
 void ManualDrivebase::OnTick(units::second_t deltaTime) {
   if (_driverController->GetXButtonPressed()) {
     ResetMode();
-    if (isRotateMatch) {
-      isRotateMatch = false;
-    } else {
-      isRotateMatch = true;
-    }
+    isRotateMatch = !isRotateMatch;
   }
 
   if (_driverController->GetYButton()) {
@@ -126,7 +121,7 @@ void ManualDrivebase::CalculateRequestedAngle(double joystickX,
                                               double joystickY,
                                               units::degree_t defaultAngle) {
   _requestedAngle = (1_rad * std::atan2(joystickY, -joystickX)) + 90_deg;
-  if (joystickX == 0 & joystickY == 0) {
+  if (wom::utils::deadzone(joystickX) == 0 && wom::utils::deadzone(joystickY) == 0) {
     _requestedAngle = _swerveDrivebase->GetPose().Rotation().Radians();
   }
 }

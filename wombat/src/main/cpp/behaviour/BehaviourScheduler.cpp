@@ -4,13 +4,15 @@
 
 #include "behaviour/BehaviourScheduler.h"
 
+#include <iostream>
+
 using namespace behaviour;
 
 BehaviourScheduler::BehaviourScheduler() {}
 
 BehaviourScheduler::~BehaviourScheduler() {
   for (HasBehaviour* sys : _systems) {
-    if (sys->_active_behaviour)
+    if (sys->_active_behaviour != nullptr)
       sys->_active_behaviour->Interrupt();
   }
 
@@ -76,9 +78,16 @@ void BehaviourScheduler::Tick() {
 }
 
 void BehaviourScheduler::InterruptAll() {
+  std::cout << "Entered InterruptAll" << std::endl;
   std::lock_guard<std::recursive_mutex> lk(_active_mtx);
+  std::cout << "Arrived after mutex creation" << std::endl;
   for (HasBehaviour* sys : _systems) {
-    if (sys->_active_behaviour)
+    std::cout << "Entered for loop" << std::endl;
+    if (sys->_active_behaviour != nullptr) {
+      std::cout << "Active behaviour != nullptr" << std::endl;
       sys->_active_behaviour->Interrupt();
+    }
+
+    std::cout << "Active behaviour == nullptr or if exited" << std::endl;
   }
 }

@@ -15,10 +15,12 @@
 #include <frc/kinematics/DifferentialDriveKinematics.h>
 #include <frc/controller/RamseteController.h>
 #include <frc/Timer.h>
+#include "behaviour/HasBehaviour.h"
 
 static units::second_t lastPeriodic;
 
 void Robot::RobotInit() {
+  sched = wom::BehaviourScheduler::GetInstance();
   m_chooser.SetDefaultOption("Default Auto", "Default Auto");
 
   frc::SmartDashboard::PutData("Auto Selector", &m_chooser);
@@ -53,7 +55,7 @@ void Robot::RobotPeriodic() {
   lastPeriodic = wom::now();
 
   loop.Poll();
-  wom::BehaviourScheduler::GetInstance()->Tick();
+  sched->Tick();
 
   _swerveDrive->OnUpdate(dt);
 }
@@ -63,15 +65,14 @@ void Robot::AutonomousInit() {
 
   loop.Clear();
   sched->InterruptAll();
-  // _swerveDrive->OnStart();
 }
 void Robot::AutonomousPeriodic() {
   // m_driveSim->OnUpdate();
 }
 
 void Robot::TeleopInit() {
-  // _swerveDrive->OnStart();
-  // sched->InterruptAll();
+  loop.Clear();
+  sched->InterruptAll();
 }
 void Robot::TeleopPeriodic() {}
 
@@ -82,5 +83,4 @@ void Robot::TestInit() {}
 void Robot::TestPeriodic() {}
 
 void Robot::SimulationInit() {}
-
 void Robot::SimulationPeriodic() {}
