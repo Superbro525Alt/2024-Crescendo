@@ -41,6 +41,8 @@ void SwerveModule::OnUpdate(units::second_t dt) {
   units::volt_t driveVoltage{0};
   units::volt_t turnVoltage{0};
 
+  
+
   switch (_state) {
     case SwerveModuleState::kIdle:
       driveVoltage = 0_V;
@@ -88,8 +90,9 @@ void SwerveModule::OnUpdate(units::second_t dt) {
   std::cout << "Turn Voltage: " << turnVoltage.value() << std::endl;
 
   _config.driveMotor.motorController->SetVoltage(driveVoltage);
-  //_config.turnMotor.motorController->SetVoltage(turnVoltage);
-  _config.turnMotor.motorController->SetVoltage(0_V);
+  _config.turnMotor.motorController->SetVoltage(turnVoltage);
+  // _config.turnMotor.motorController->SetVoltage(0_V);
+  // _config.driveMotor.motorController->SetVoltage(0_V);
 
   _table->GetEntry("speed").SetDouble(GetSpeed().value());
   _table->GetEntry("angle").SetDouble(

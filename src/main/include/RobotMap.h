@@ -28,23 +28,23 @@ struct RobotMap {
   Controllers controllers;
 
   struct SwerveBase {
-    ctre::phoenix6::hardware::CANcoder frontLeftCancoder{16, "Drivebase"};
-    ctre::phoenix6::hardware::CANcoder frontRightCancoder{18, "Drivebase"};
-    ctre::phoenix6::hardware::CANcoder backLeftCancoder{17, "Drivebase"};
-    ctre::phoenix6::hardware::CANcoder backRightCancoder{19, "Drivebase"};
+    ctre::phoenix6::hardware::CANcoder frontLeftCancoder{18, "Drivebase"};
+    ctre::phoenix6::hardware::CANcoder frontRightCancoder{19, "Drivebase"};
+    ctre::phoenix6::hardware::CANcoder backLeftCancoder{16, "Drivebase"};
+    ctre::phoenix6::hardware::CANcoder backRightCancoder{17, "Drivebase"};
 
     ctre::phoenix6::hardware::Pigeon2* gyro =
         new ctre::phoenix6::hardware::Pigeon2(20, "Drivebase");
     wpi::array<ctre::phoenix6::hardware::TalonFX*, 4> turnMotors{
-        new ctre::phoenix6::hardware::TalonFX(5, "Drivebase"),   // front left
-        new ctre::phoenix6::hardware::TalonFX(7, "Drivebase"),   // front right
-        new ctre::phoenix6::hardware::TalonFX(3, "Drivebase"),   // back left
-        new ctre::phoenix6::hardware::TalonFX(1, "Drivebase")};  // back right
+        new ctre::phoenix6::hardware::TalonFX(7, "Drivebase"),   // front left
+        new ctre::phoenix6::hardware::TalonFX(2, "Drivebase"),   // front right
+        new ctre::phoenix6::hardware::TalonFX(6, "Drivebase"),   // back left
+        new ctre::phoenix6::hardware::TalonFX(4, "Drivebase")};  // back right
     wpi::array<ctre::phoenix6::hardware::TalonFX*, 4> driveMotors{
-        new ctre::phoenix6::hardware::TalonFX(6, "Drivebase"),   // front left
-        new ctre::phoenix6::hardware::TalonFX(9, "Drivebase"),   // front right
-        new ctre::phoenix6::hardware::TalonFX(4, "Drivebase"),   // back left
-        new ctre::phoenix6::hardware::TalonFX(2, "Drivebase")};  // back right
+        new ctre::phoenix6::hardware::TalonFX(9, "Drivebase"),   // front left
+        new ctre::phoenix6::hardware::TalonFX(1, "Drivebase"),   // front right
+        new ctre::phoenix6::hardware::TalonFX(5, "Drivebase"),   // back left
+        new ctre::phoenix6::hardware::TalonFX(3, "Drivebase")};  // back right
 
     wpi::array<wom::SwerveModuleConfig, 4> moduleConfigs{
         wom::SwerveModuleConfig{

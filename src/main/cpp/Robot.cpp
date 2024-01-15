@@ -48,6 +48,15 @@ void Robot::RobotInit() {
 
   // m_driveSim = new wom::TempSimSwerveDrive(&simulation_timer, &m_field);
   // m_driveSim = wom::TempSimSwerveDrive();
+
+  // frontLeft = new ctre::phoenix6::hardware::TalonFX(7, "Drivebase");  // front left
+  // frontRight = new ctre::phoenix6::hardware::TalonFX(2, "Drivebase");   // front right
+  // backLeft = new ctre::phoenix6::hardware::TalonFX(6, "Drivebase");   // back left
+  // backRight = new ctre::phoenix6::hardware::TalonFX(4, "Drivebase");  // back right
+  // frontLeft = new ctre::phoenix6::hardware::TalonFX(9, "Drivebase");   // front left
+  // frontRight = new ctre::phoenix6::hardware::TalonFX(1, "Drivebase");   // front right
+  // backLeft = new ctre::phoenix6::hardware::TalonFX(5, "Drivebase");   // back left
+  // backRight = new ctre::phoenix6::hardware::TalonFX(3, "Drivebase");
 }
 
 void Robot::RobotPeriodic() {
@@ -73,6 +82,11 @@ void Robot::AutonomousPeriodic() {
 void Robot::TeleopInit() {
   loop.Clear();
   sched->InterruptAll();
+
+  // frontLeft->SetVoltage(4_V);
+  // frontRight->SetVoltage(4_V);
+  // backLeft->SetVoltage(4_V);
+  // backRight->SetVoltage(4_V);
 }
 void Robot::TeleopPeriodic() {}
 
