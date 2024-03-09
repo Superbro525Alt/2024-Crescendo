@@ -185,8 +185,8 @@ class SequentialBehaviour : public Behaviour {
   std::vector<std::string> GetQueue();
 
  protected:
-  // std::deque<ptr> _queue;
-  std::vector<ptr> _queue;
+  std::deque<ptr> _queue;
+  // std::vector<ptr> _queue;
 };
 
 inline std::shared_ptr<SequentialBehaviour> operator<<(Behaviour::ptr a, Behaviour::ptr b) {

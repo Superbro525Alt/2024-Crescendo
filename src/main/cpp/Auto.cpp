@@ -22,20 +22,20 @@ wom::SwerveAutoBuilder* autos::InitCommands(wom::drivetrain::SwerveDrive* _swerv
        // {"Shoot", [_shooter]() { return wom::make<AutoShoot>(_shooter); }},
         {"IntakeNote",
         [_intake]() {
-          return wom::make<IntakeNote>(_intake) /*->Until(wom::make<behaviour::WaitTime>(3_s))*/;
+          return wom::make<IntakeNote>(_intake)->Until(wom::make<behaviour::WaitTime>(0.5_s));
         }},
         {"PassNote",
         [_intake]() { return wom::make<PassNote>(_intake)->Until(wom::make<behaviour::WaitTime>(1_s)); }},
         {"EjectNote", [_intake]() { return wom::make<EjectNote>(_intake)->WithTimeout(1_s); }},
         {"ShootAndWait", [_shooter, _intake]() {
-          return wom::make<AutoShooter>(_shooter, _intake, 1500_rad_per_s)
-              ->Until(wom::make<wom::WaitTime>(3.1_s))
-          << wom::make<wom::WaitTime>(2_s);
+          return wom::make<AutoShooter>(_shooter, _intake, 1500_rad_per_s, false)
+              ->Until(wom::make<wom::WaitTime>(2_s))
+          << wom::make<wom::WaitTime>(0.5_s);
         }},
-        {"Shoot", [_shooter, _intake]() { return wom::make<AutoShooter>(_shooter, _intake, 1500_rad_per_s)->Until(wom::make<wom::WaitTime>(3.1_s)); }},
+        {"Shoot", [_shooter, _intake]() { return wom::make<AutoShooter>(_shooter, _intake, 1500_rad_per_s, true)->Until(wom::make<wom::WaitTime>(2_s)); }},
         {"TurnToThirdNote", [_swerveDrive]() { return wom::make<wom::TurnToAngleBehaviour>(_swerveDrive, -30_deg); }},
         {"TurnToSpeakerFromThird", [_swerveDrive]() { return wom::make<wom::TurnToAngleBehaviour>(_swerveDrive, 5_deg); }},
-        {"TurnToSecondNote", [_swerveDrive]() { return wom::make<wom::TurnToAngleBehaviour>(_swerveDrive, 30_deg); }},
+        {"TurnToSecondNote", [_swerveDrive]() { return wom::make<wom::TurnToAngleBehaviour>(_swerveDrive, 35_deg); }},
         {"TurnToSpeakerFromSecond", [_swerveDrive]() { return wom::make<wom::TurnToAngleBehaviour>(_swerveDrive, -5_deg); }},
         {"TurnToSecondNoteFar", [_swerveDrive]() { return wom::make<wom::TurnToAngleBehaviour>(_swerveDrive, 10_deg); }},
         {"TurnToSpeakerFromSecondFar", [_swerveDrive]() { return wom::make<wom::TurnToAngleBehaviour>(_swerveDrive, -10_deg); }},

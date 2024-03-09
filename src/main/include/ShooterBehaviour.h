@@ -34,7 +34,7 @@ class ShooterManualControl : public behaviour::Behaviour {
 
 class AutoShooter : public behaviour::Behaviour {
  public:
-  AutoShooter(Shooter* shooter, Intake* intake, units::radians_per_second_t goal);
+  AutoShooter(Shooter* shooter, Intake* intake, units::radians_per_second_t goal, bool instant_shoot);
 
   void OnTick(units::second_t dt) override;
   void OnStop() override;
@@ -46,4 +46,5 @@ class AutoShooter : public behaviour::Behaviour {
 
   frc::Timer _timer;
   bool _timer_started = false;
+  bool _instant_shoot;
 };

@@ -720,6 +720,8 @@ SwerveDriveState SwerveDrive::GetState() {
 
 void SwerveDrive::ResetPose(frc::Pose2d pose) {
   std::cout << "RESETTING POSE" << std::endl;
+  if (units::math::abs(_target_fr_speeds.vx) > 0.3_mps || units::math::abs(_target_fr_speeds.vy) > 0.3_mps) { return; }
+  
   _poseEstimator.ResetPosition(
       _config.gyro->GetRotation2d() /* - 1_rad*/,
       wpi::array<frc::SwerveModulePosition, 4>{_modules[3].GetPosition(), _modules[0].GetPosition(),

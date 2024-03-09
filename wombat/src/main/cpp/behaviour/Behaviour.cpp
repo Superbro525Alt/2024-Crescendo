@@ -129,8 +129,8 @@ void SequentialBehaviour::OnTick(units::time::second_t dt) {
     SetPeriod(_queue.front()->GetPeriod());
     _queue.front()->Tick();
     if (_queue.front()->IsFinished()) {
-      // _queue.pop_front();
-      _queue.erase(_queue.begin());
+      _queue.pop_front();
+      // _queue.erase(_queue.begin());
       if (_queue.empty())
         SetDone();
       else
@@ -145,8 +145,8 @@ void SequentialBehaviour::OnStop() {
   if (GetBehaviourState() != BehaviourState::DONE) {
     while (!_queue.empty()) {
       _queue.front()->Interrupt();
-      // _queue.pop_front();
-      _queue.erase(_queue.begin());
+      _queue.pop_front();
+      // _queue.erase(_queue.begin());
     }
   }
 }

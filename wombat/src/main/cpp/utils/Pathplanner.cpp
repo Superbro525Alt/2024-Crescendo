@@ -275,12 +275,14 @@ utils::FollowPath::FollowPath(drivetrain::SwerveDrive* swerve, std::string path,
 
   int amt = 1;
   size_t tot = points.size();
-  int index = std::round((static_cast<double>(amt) / static_cast<double>(tot)) * 100);
+  // int index = std::round((static_cast<double>(amt) / static_cast<double>(tot)) * 100);
+  
   // double index = (amt / tot) * 100;
+  
   int i = 0;
   bool f = true;
 
-  nt::NetworkTableInstance::GetDefault().GetTable("pathplanner")->GetEntry("index").SetDouble(index);
+  // nt::NetworkTableInstance::GetDefault().GetTable("pathplanner")->GetEntry("index").SetDouble(index);
   nt::NetworkTableInstance::GetDefault().GetTable("pathplanner")->GetEntry("total").SetInteger(tot);
 
   for (const pathplanner::PathPoint& point : points) {
@@ -297,7 +299,7 @@ utils::FollowPath::FollowPath(drivetrain::SwerveDrive* swerve, std::string path,
     frc::Translation2d tr = frc::Translation2d(point.position.X() * -1, point.position.Y() * -1);
     frc::Pose2d pose2 = frc::Pose2d(tr, rot);  //.TransformBy(frc::Transform2d(-1.37_m, -5.56_m, 0_deg));
 
-    if (i == index || i == static_cast<int>(tot - 1) || f) {
+    if (/*i == index ||*/ i == static_cast<int>(tot - 1) || f) {
       WritePose2NT(nt::NetworkTableInstance::GetDefault().GetTable("pathplanner/offset"), _offset); // -6 -6
       _poses.emplace_back(frc::Pose2d(pose2.X() - _offset.X(), pose2.Y() - _offset.Y(), 0_deg));
       // _poses.emplace_back(frc::Pose2d(pose2.Y(), pose2.X(), pose2.Rotation()));
@@ -355,7 +357,9 @@ utils::FollowPath::FollowPath(drivetrain::SwerveDrive* swerve, std::string path,
 }
 
 std::vector<pathplanner::PathPoint> utils::FollowPath::CheckPoints(std::vector<pathplanner::PathPoint> points) {
-  units::meter_t threshhold = 4_m;  
+  std::cout << "Checking Points..." << std::endl;
+
+  units::meter_t threshhold = 10_m;  
   bool posesgood = true;
 
   for (auto point : points) {
@@ -385,9 +389,10 @@ void utils::FollowPath::CalcTimer() {
 
   _timer.Stop();
   _timer.Reset();
-  _time = units::second_t{std::abs(dist.value()) / 1 /*meters per second ?No?*/};
+  _time = units::second_t{std::abs(dist.value()) / 0.6 /*meters per second ?No?*/};
 
-  _time = units::math::min(_time, 4_s);
+  _time = units::math::min(_time, 1.5_s);
+  _time = units::math::max(_time, 3_s);
 
   // _time = 15_s;
   _timer.Start();
@@ -613,8 +618,8 @@ void utils::AutoBuilder::SetAuto(std::string path) {
   WritePose2NT(nt::NetworkTableInstance::GetDefault().GetTable("pathplanner/offset"), startPose);
   nt::NetworkTableInstance::GetDefault().GetTable("pathplanner")->GetEntry("name").SetString(path);
 
-  _swerve->SetAccelerationLimit(units::meters_per_second_squared_t{2});
-  _swerve->SetVoltageLimit(6_V);
+  _swerve->SetAccelerationLimit(units::meters_per_second_squared_t{10});
+  _swerve->SetVoltageLimit(10_V);
 
   // WritePose2NT(nt::NetworkTableInstance::GetDefault().GetTable("startPose"),
   //              JSONPoseToPose2d(*_startingPose));

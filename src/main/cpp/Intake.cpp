@@ -84,7 +84,7 @@ void Intake::OnUpdate(units::second_t dt) {
         SetState(IntakeState::kHold);
       }
       _stringStateName = "Intake";
-      _setVoltage = -9_V;
+      _setVoltage = -5_V;
     } break;
 
     case IntakeState::kPass: {

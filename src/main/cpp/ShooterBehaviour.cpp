@@ -57,7 +57,7 @@ void ShooterManualControl::OnTick(units::second_t dt) {
   }
 }
 
-AutoShooter::AutoShooter(Shooter* shooter, Intake* intake, units::radians_per_second_t goal) : behaviour::Behaviour("<Shoot>"), _shooter(shooter), _intake(intake), _goal(goal) {
+AutoShooter::AutoShooter(Shooter* shooter, Intake* intake, units::radians_per_second_t goal, bool instant_shoot) : behaviour::Behaviour("<Shoot>"), _shooter(shooter), _intake(intake), _goal(goal), _instant_shoot(instant_shoot) {
   Controls(shooter);
 }
 
@@ -81,12 +81,9 @@ void AutoShooter::OnTick(units::second_t dt) {
     _shooter->SetState(ShooterState::kSpinUp);
   // }
 
-  if (_timer.Get() > 1_s) {
+  if (_timer.Get() > 1_s || _instant_shoot) {
     _intake->SetState(IntakeState::kPass);
-  } else if (_timer.Get() > 3_s) {
-    _shooter->SetPidGoal(0_rad_per_s);
-    _intake->SetState(IntakeState::kIdle);
-
+  } else if (_timer.Get() > 2_s) {
     SetDone();
   }/* else {
     _intake->SetState(IntakeState::kHold);
@@ -94,7 +91,7 @@ void AutoShooter::OnTick(units::second_t dt) {
 }
 
 void AutoShooter::OnStop() {
-  _shooter->SetPidGoal(0_rad_per_s);
+  // _shooter->SetPidGoal(0_rad_per_s);
   // _shooter->SetState(ShooterState::kIdle);
   _intake->SetState(IntakeState::kIdle);
 }
