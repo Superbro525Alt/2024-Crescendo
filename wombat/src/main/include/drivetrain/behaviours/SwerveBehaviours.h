@@ -244,10 +244,13 @@ public:
   TurnToAngleBehaviour(SwerveDrive* swerve, units::radian_t angle);
 
   void OnTick(units::second_t dt) override;
+  void OnStart() override;
 
 private:
   units::radian_t _angle;
   SwerveDrive* _swerve;
+  frc::Timer _timer;
+  bool _has_set_timer = false;
 };
 }  // namespace behaviours
 }  // namespace drivetrain

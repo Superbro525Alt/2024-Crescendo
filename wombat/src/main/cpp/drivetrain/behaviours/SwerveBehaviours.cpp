@@ -279,13 +279,22 @@ wom::drivetrain::behaviours::TurnToAngleBehaviour::TurnToAngleBehaviour(wom::dri
   Controls(swerve);
 }
 
+void wom::drivetrain::behaviours::TurnToAngleBehaviour::OnStart() {
+  _timer.Start();
+}
+
 void wom::drivetrain::behaviours::TurnToAngleBehaviour::OnTick(units::second_t dt) {
+  if (!_has_set_timer) {
+    _timer.Start();
+    _has_set_timer = true;
+  }
+
   _swerve->TurnToAngle(_angle);
 
   nt::NetworkTableInstance::GetDefault().GetTable("drivetrain")->GetEntry("targetAngle").SetDouble(_angle.value());
   nt::NetworkTableInstance::GetDefault().GetTable("drivetrain")->GetEntry("runningangle").SetBoolean(true);
 
-  if (units::math::abs(_swerve->GetPose().Rotation().Radians() - _angle) < 0.1_rad) {
+  if (units::math::abs(_swerve->GetPose().Rotation().Radians() - _angle) < 0.2_rad || _timer.Get() > 1_s) {
     nt::NetworkTableInstance::GetDefault().GetTable("drivetrain")->GetEntry("runningangle").SetBoolean(false);
     SetDone();
   }

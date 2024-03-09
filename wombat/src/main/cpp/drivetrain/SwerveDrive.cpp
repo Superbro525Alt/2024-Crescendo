@@ -431,7 +431,7 @@ SwerveDrive::SwerveDrive(SwerveDriveConfig config, frc::Pose2d initialPose)
       _anglePIDController{PIDController(0, 0, 0)},
       _xPIDController(PIDController(4, 0.1, 0)),
       _yPIDController(PIDController(4, 0.1, 0)),
-      _turnPIDController(PIDController(7, 0, 0)),
+      _turnPIDController(PIDController(10, 0, 0)),
       // _xPIDController(std::string path, config_t initialGains)
       // _xPIDController(config.path + "/pid/x", _config.posePositionPID),
       // _yPIDController(config.path + "/pid/y", _config.posePositionPID),
@@ -696,8 +696,8 @@ void SwerveDrive::SetPose(frc::Pose2d pose) {
 }
 
 bool SwerveDrive::IsAtSetPose() {
-  if (std::abs(_xPIDController.GetPositionError()) < 0.1 &&
-      std::abs(_yPIDController.GetPositionError()) < 0.1) {
+  if (std::abs(_xPIDController.GetPositionError()) < 0.3 &&
+      std::abs(_yPIDController.GetPositionError()) < 0.3) {
     if (std::abs(_xPIDController.GetVelocityError()) < 1 &&
         std::abs(_yPIDController.GetVelocityError()) < 1) {
       return false;

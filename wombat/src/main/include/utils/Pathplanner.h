@@ -10,6 +10,7 @@
 
 #include <algorithm>
 #include <any>
+#include <array>
 #include <functional>
 #include <memory>
 #include <stdexcept>
@@ -266,7 +267,7 @@ class FollowPath : public behaviour::Behaviour {
 
   std::string _pathName;
   std::shared_ptr<pathplanner::PathPlannerPath> _path;
-  std::vector<frc::Pose2d> _poses;
+  std::array<frc::Pose2d, 2> _poses;
 
   drivetrain::SwerveDrive* _swerve;
 
