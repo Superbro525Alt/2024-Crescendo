@@ -22,7 +22,7 @@ wom::SwerveAutoBuilder* autos::InitCommands(wom::drivetrain::SwerveDrive* _swerv
        // {"Shoot", [_shooter]() { return wom::make<AutoShoot>(_shooter); }},
         {"IntakeNote",
         [_intake]() {
-          return wom::make<IntakeNote>(_intake)->Until(wom::make<behaviour::WaitTime>(0.5_s));
+          return wom::make<IntakeNote>(_intake);
         }},
         {"PassNote",
         [_intake]() { return wom::make<PassNote>(_intake)->Until(wom::make<behaviour::WaitTime>(1_s)); }},

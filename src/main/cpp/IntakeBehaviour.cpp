@@ -70,7 +70,7 @@ void AutoIntake::OnTick(units::second_t dt) {
   _intake->SetState(IntakeState::kIntake);
 }
 
-IntakeNote::IntakeNote(Intake* intake) : _intake(intake), behaviour::Behaviour("<Intake Note>") {
+IntakeNote::IntakeNote(Intake* intake) : behaviour::Behaviour("<Intake Note>"), _intake(intake) {
   Controls(intake);
 }
 
