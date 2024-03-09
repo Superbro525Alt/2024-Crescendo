@@ -610,6 +610,8 @@ void utils::AutoBuilder::SetAuto(std::string path) {
 
   nt::NetworkTableInstance::GetDefault().GetTable("commands")->GetEntry("PathAmt").SetInteger(pathamt);
   nt::NetworkTableInstance::GetDefault().GetTable("commands")->GetEntry("CommandAmt").SetInteger(commandamt);
+  WritePose2NT(nt::NetworkTableInstance::GetDefault().GetTable("pathplanner/offset"), startPose);
+  nt::NetworkTableInstance::GetDefault().GetTable("pathplanner")->GetEntry("name").SetString(path);
 
   _swerve->SetAccelerationLimit(units::meters_per_second_squared_t{2});
   _swerve->SetVoltageLimit(6_V);

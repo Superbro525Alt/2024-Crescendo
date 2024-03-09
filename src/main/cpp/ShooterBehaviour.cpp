@@ -70,24 +70,31 @@ void AutoShooter::OnTick(units::second_t dt) {
     _timer_started = true;
   }
 
-  _shooter->SetState(ShooterState::kSpinUp);
+  // _shooter->SetState(ShooterState::kSpinUp);
   // _intake->SetState(IntakeState::kIntake);
 
   _shooter->SetPidGoal(_goal);
 
+  // if (_intake->GetState() != IntakeState::kPass && _intake->GetConfig().passSensor->Get() == false) {
+    // _shooter->SetState(ShooterState::kReverse);
+  // } else {
+    _shooter->SetState(ShooterState::kSpinUp);
+  // }
+
   if (_timer.Get() > 1_s) {
     _intake->SetState(IntakeState::kPass);
+  } else if (_timer.Get() > 3_s) {
+    _shooter->SetPidGoal(0_rad_per_s);
+    _intake->SetState(IntakeState::kIdle);
 
-    if (_timer.Get() > 1.9_s) {
-      _intake->SetState(IntakeState::kIdle);
-      _shooter->SetState(ShooterState::kIdle);
-
-      SetDone();
-    }
-  }
+    SetDone();
+  }/* else {
+    _intake->SetState(IntakeState::kHold);
+  } */
 }
 
 void AutoShooter::OnStop() {
-  _shooter->SetState(ShooterState::kIdle);
+  _shooter->SetPidGoal(0_rad_per_s);
+  // _shooter->SetState(ShooterState::kIdle);
   _intake->SetState(IntakeState::kIdle);
 }

@@ -27,14 +27,16 @@ wom::SwerveAutoBuilder* autos::InitCommands(wom::drivetrain::SwerveDrive* _swerv
         {"PassNote",
         [_intake]() { return wom::make<PassNote>(_intake)->Until(wom::make<behaviour::WaitTime>(1_s)); }},
         {"EjectNote", [_intake]() { return wom::make<EjectNote>(_intake)->WithTimeout(1_s); }},
-        {"Shoot", [_shooter, _intake]() {
+        {"ShootAndWait", [_shooter, _intake]() {
           return wom::make<AutoShooter>(_shooter, _intake, 1500_rad_per_s)
-              ->Until(wom::make<wom::WaitTime>(2_s));
+              ->Until(wom::make<wom::WaitTime>(3.1_s))
+          << wom::make<wom::WaitTime>(2_s);
         }},
-        {"TurnToThirdNote", [_swerveDrive]() { return wom::make<wom::TurnToAngleBehaviour>(_swerveDrive, -50_deg); }},
-        {"TurnToSpeakerFromThird", [_swerveDrive]() { return wom::make<wom::TurnToAngleBehaviour>(_swerveDrive, 15_deg); }},
+        {"Shoot", [_shooter, _intake]() { return wom::make<AutoShooter>(_shooter, _intake, 1500_rad_per_s)->Until(wom::make<wom::WaitTime>(3.1_s)); }},
+        {"TurnToThirdNote", [_swerveDrive]() { return wom::make<wom::TurnToAngleBehaviour>(_swerveDrive, -30_deg); }},
+        {"TurnToSpeakerFromThird", [_swerveDrive]() { return wom::make<wom::TurnToAngleBehaviour>(_swerveDrive, 5_deg); }},
         {"TurnToSecondNote", [_swerveDrive]() { return wom::make<wom::TurnToAngleBehaviour>(_swerveDrive, 30_deg); }},
-        {"TurnToSpeakerFromSecond", [_swerveDrive]() { return wom::make<wom::TurnToAngleBehaviour>(_swerveDrive, -10_deg); }},
+        {"TurnToSpeakerFromSecond", [_swerveDrive]() { return wom::make<wom::TurnToAngleBehaviour>(_swerveDrive, -5_deg); }},
         {"TurnToSecondNoteFar", [_swerveDrive]() { return wom::make<wom::TurnToAngleBehaviour>(_swerveDrive, 10_deg); }},
         {"TurnToSpeakerFromSecondFar", [_swerveDrive]() { return wom::make<wom::TurnToAngleBehaviour>(_swerveDrive, -10_deg); }},
         {"TurnToSecondNoteFromSide", [_swerveDrive]() { return wom::make<wom::TurnToAngleBehaviour>(_swerveDrive, 35_deg); }},

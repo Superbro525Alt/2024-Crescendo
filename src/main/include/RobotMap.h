@@ -196,9 +196,12 @@ struct RobotMap {
     wom::CANSparkMaxEncoder* shooterEncoder = new wom::CANSparkMaxEncoder(&shooterMotor, 0.01_m);
     wom::Gearbox shooterGearbox{&shooterMotor, shooterEncoder, frc::DCMotor::NEO(1)};
 
+    // frc::DigitalInput passSensor{5};
+
     ShooterConfig config{
         "shooterGearbox",
         shooterGearbox,
+        // &sensors.passSensor
     };
   };
   Shooter shooterSystem;

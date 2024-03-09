@@ -19,16 +19,19 @@ void AlphaArm::OnStart() {
 void AlphaArm::OnUpdate(units::second_t dt) {
   switch (_state) {
     case AlphaArmState::kIdle:
+      _stringStateName = "kIdle";
 
       _setAlphaArmVoltage = 0_V;
       break;
     case AlphaArmState::kRaw:
+      _stringStateName = "kRaw";
       std::cout << "RawControl" << std::endl;
       _setAlphaArmVoltage = _rawArmVoltage;
 
       break;
 
     case AlphaArmState::kHoldAngle: {
+      _stringStateName = "kHoldAngle";
       _pidIntakeState.SetSetpoint(-_goal);
       //_setAlphaArmVoltage =
       //_pidArm.Calculate(_alphaArm->GetConfig().config->alphaArmEncoder.GetEncoderPosition());
@@ -36,6 +39,7 @@ void AlphaArm::OnUpdate(units::second_t dt) {
           _pidIntakeState.Calculate(-(_config->alphaArmEncoder.GetEncoderPosition().value() * (2 * 3.1415)))};
     } break;
     case AlphaArmState::kAmpAngle:
+      _stringStateName = "kAmpAngle";
       std::cout << "Amp Angle" << std::endl;
 
       _pidArmStates.SetSetpoint(-2.12);
@@ -45,18 +49,24 @@ void AlphaArm::OnUpdate(units::second_t dt) {
       break;
 
     case AlphaArmState::kIntakeAngle:
+      _stringStateName = "kIntakeAngle";
+
       std::cout << "Intake Angle" << std::endl;
       _pidIntakeState.SetSetpoint(-0.50);  //-0.48
       _setAlphaArmVoltage = units::volt_t{
           _pidIntakeState.Calculate(-(_config->alphaArmEncoder.GetEncoderPosition().value() * (2 * 3.1415)))};
       break;
     case AlphaArmState::kIntakedAngle:
+      _stringStateName = "kIntakedAngle";
+
       std::cout << "Intake Angle" << std::endl;
-      _pidIntakeState.SetSetpoint(-0.55);  //-0.48
+      _pidIntakeState.SetSetpoint(-0.6);  //-0.48
       _setAlphaArmVoltage = units::volt_t{
           _pidIntakeState.Calculate(-(_config->alphaArmEncoder.GetEncoderPosition().value() * (2 * 3.1415)))};
       break;
     case AlphaArmState::kClimbAngle:
+      _stringStateName = "kClimbAngle";
+
       std::cout << "Climb Angle" << std::endl;
       _pidArmStates.SetSetpoint(-2.00);  //-0.48
       _setAlphaArmVoltage = units::volt_t{
@@ -64,6 +74,8 @@ void AlphaArm::OnUpdate(units::second_t dt) {
       break;
 
     case AlphaArmState::kClimbed:
+      _stringStateName = "kClimbed";
+
       std::cout << "Climb Angle" << std::endl;
       _pidClimberStates.SetSetpoint(-0.5);  //-0.48
       _setAlphaArmVoltage = units::volt_t{_pidClimberStates.Calculate(
@@ -71,6 +83,8 @@ void AlphaArm::OnUpdate(units::second_t dt) {
       break;
 
     case AlphaArmState::kSpeakerAngle:
+      _stringStateName = "kSpeakerAngle";
+
       std::cout << "Speaker Angle" << std::endl;
       _pidIntakeState.SetSetpoint(-0.82);
       _setAlphaArmVoltage = units::volt_t{
@@ -84,11 +98,15 @@ void AlphaArm::OnUpdate(units::second_t dt) {
       // break;
 
     case AlphaArmState::kStowed:
+      _stringStateName = "kStowed";
+
       std::cout << "Shuttling angle" << std::endl;
       _pidIntakeState.SetSetpoint(-1.20);
       _setAlphaArmVoltage = units::volt_t{
           _pidIntakeState.Calculate(-(_config->alphaArmEncoder.GetEncoderPosition().value() * (2 * 3.1415)))};
     default:
+      _stringStateName = "INVALID";
+
       std::cout << "Error: alphaArm in INVALID STATE" << std::endl;
       break;
   }
@@ -105,6 +123,8 @@ void AlphaArm::OnUpdate(units::second_t dt) {
 
   _table->GetEntry("Intake SetPoint State").SetDouble(_pidIntakeState.GetSetpoint());
   _table->GetEntry("Intake PID Error State").SetDouble(_pidIntakeState.GetPositionError());
+
+  _table->GetEntry("State Name").SetString(_stringStateName);
 
   std::cout << "Voltage:" << _setAlphaArmVoltage.value() << std::endl;
 }

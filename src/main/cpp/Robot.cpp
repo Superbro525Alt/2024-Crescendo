@@ -139,6 +139,7 @@ void Robot::RobotPeriodic() {
 void Robot::AutonomousInit() {
   loop.Clear();
   sched->InterruptAll();
+  intake->OnStart();
   // _swerveDrive->MakeAtSetPoint();
   // _swerveDrive->SetPose(frc::Pose2d());
 
@@ -176,6 +177,7 @@ void Robot::TeleopInit() {
   //  FMAP("fmap.fmap");
 
   _swerveDrive->OnStart();
+  intake->OnStart();
   // sched->InterruptAll();
 
   // reimplement when vision is reimplemented

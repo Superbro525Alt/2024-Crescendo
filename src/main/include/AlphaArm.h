@@ -54,6 +54,7 @@ class AlphaArm : public behaviour::HasBehaviour {
   AlphaArmConfig* _config;
   // wom::vision::Limelight* _vision;
   AlphaArmState _state = AlphaArmState::kIdle;
+  std::string _stringStateName;
   // wom::utils::PIDController<units::degree, units::volt> _alphaArmPID;
   // frc::DutyCycleEncoder armEncoder{4};
   frc::PIDController _pidArm;

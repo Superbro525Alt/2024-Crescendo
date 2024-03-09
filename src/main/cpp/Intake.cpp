@@ -12,7 +12,7 @@
 Intake::Intake(IntakeConfig config)
     : _config(config),
       _pid(frc::PIDController(0.02, 0, 0, 0.05_s)),
-      _pidPosition(frc::PIDController(1.2, 0, 0, 0.05_s)) {}
+      _pidPosition(frc::PIDController(1.4, 0, 0, 0.05_s)) {}
 
 IntakeConfig Intake::GetConfig() {
   return _config;
@@ -20,7 +20,8 @@ IntakeConfig Intake::GetConfig() {
 
 void Intake::OnStart() {
   _pid.Reset();
-
+  
+  _timer.Reset();
   _timer.Start();
 }
 
@@ -83,7 +84,7 @@ void Intake::OnUpdate(units::second_t dt) {
         SetState(IntakeState::kHold);
       }
       _stringStateName = "Intake";
-      _setVoltage = -10_V;
+      _setVoltage = -9_V;
     } break;
 
     case IntakeState::kPass: {
@@ -97,7 +98,7 @@ void Intake::OnUpdate(units::second_t dt) {
       }
 
       _stringStateName = "Pass";
-      _setVoltage = -10_V;
+      _setVoltage = -11_V;
     } break;
   }
   _table->GetEntry("State").SetString(_stringStateName);
@@ -108,13 +109,15 @@ void Intake::OnUpdate(units::second_t dt) {
   _table->GetEntry("SetPoint").SetDouble(_pidPosition.GetSetpoint());
   _table->GetEntry("Encoder").SetDouble(_config.IntakeGearbox.encoder->GetEncoderPosition().value());
   _table->GetEntry("Shot Count").SetDouble(_noteShot);
+  _table->GetEntry("Current Time").SetDouble(_timer.Get().value());
+  // _table->GetEntry("Current State").SetString(_stringStateName);
   // _table->GetEntry("Encoder: ").SetDouble(_config.IntakeGearbox.encoder->GetEncoderPosition().value());
   //
-  if (_timer.Get() < 4_s) {
+  if (_timer.Get() < 2_s) {
     _setVoltage = units::math::min(0_V, _setVoltage);
   } else {
     _timer.Stop();
-    _timer.Reset();
+    // _timer.Reset();
     // _timer.Restart();
     // _timer.Start();
   }

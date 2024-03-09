@@ -16,7 +16,7 @@ struct ShooterConfig {
   std::string path;
   wom::Gearbox ShooterGearbox;
   // wom::PIDConfig<units::radians_per_second, units::volt> pidConfig;
-  // frc::DigitalInput* shooterSensor;
+  // frc::DigitalInput* passSensor;
 };
 
 enum class ShooterState { kIdle, kShooting, kSpinUp, kReverse, kRaw };

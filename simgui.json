@@ -32,7 +32,16 @@
         }
       },
       "pathplanner": {
-        "open": true
+        "offset": {
+          "open": true
+        },
+        "open": true,
+        "poses": {
+          "1": {
+            "open": true
+          },
+          "open": true
+        }
       },
       "vision": {
         "open": true
