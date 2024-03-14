@@ -66,8 +66,9 @@ class Robot : public frc::TimedRobot {
 
   std::string m_autoSelected;
 
-  std::string defaultAuto = "OneNoteGood";
-  std::vector<std::string> autoOptions = {"ThreeNoteFromLeftSide", "ThreeNoteFromRightSide", "OneNoteGood", "ThreeNoteTaxiFrontBad", "TwoNoteFront", "TwoNoteFromLeftSide", "TwoNoteFromRightSide", "ThreeNoteFar"};
+  // std::string defaultAuto = "ThreeNoteTaxiFrontBad";
+  std::string defaultAuto = "ThreeLeftClose";
+  std::vector<std::string> autoOptions = {"ThreeLeftClose", "ThreeNoteFromRightSide", "OneNoteGood", "ThreeNoteTaxiFrontBad", "TwoNoteFront", "TwoNoteFromLeftSide", "TwoNoteFromRightSide", "ThreeNoteFar"};
 
   // frc::Field2d m_field;
 

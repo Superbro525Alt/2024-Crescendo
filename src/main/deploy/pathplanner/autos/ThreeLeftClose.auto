@@ -8,7 +8,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootAndWait"
+            "name": "Shoot"
           }
         },
         {
@@ -18,7 +18,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "FirstNote"
+                  "pathName": "ThreeLeftFirst"
                 }
               },
               {
@@ -33,7 +33,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "BackwardsWorse"
+            "pathName": "ThreeLeftSecond"
           }
         },
         {

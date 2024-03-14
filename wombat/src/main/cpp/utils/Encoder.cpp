@@ -91,6 +91,7 @@ wom::utils::CANSparkMaxEncoder::CANSparkMaxEncoder(rev::CANSparkMax* controller,
                                                    double reduction)
     : wom::utils::Encoder(42, reduction, wheelRadius, 2),
       _encoder(controller->GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor)) {}
+
 double wom::utils::CANSparkMaxEncoder::GetEncoderRawTicks() const {
   return ((_encoder.GetPosition() * 2 * 3.1415) / 200);
 }
@@ -109,6 +110,10 @@ double wom::utils::CanEncoder::GetVelocity() const {
 
 double wom::utils::DutyCycleEncoder::GetVelocity() const {
   return 0;
+}
+
+void wom::utils::DutyCycleEncoder::ZeroEncoder() {
+  _dutyCycleEncoder->Reset();
 }
 
 double wom::utils::CANSparkMaxEncoder::GetPosition() const {
@@ -135,10 +140,11 @@ wom::utils::DutyCycleEncoder::DutyCycleEncoder(int channel, units::meter_t wheel
                                                double ticksPerRotation, double reduction)
     : wom::utils::Encoder(ticksPerRotation, reduction, wheelRadius, 0) {
   _dutyCycleEncoder = new frc::DutyCycleEncoder(channel);
+  // _dutyCycleEncoder->Reset();
 }
 
 double wom::utils::DutyCycleEncoder::GetEncoderRawTicks() const {
-  return _dutyCycleEncoder->GetAbsolutePosition();
+  return _dutyCycleEncoder->GetAbsolutePosition() - (3.550128525253213 / (2 * 3.1415));
 }
 
 double wom::utils::DutyCycleEncoder::GetEncoderTickVelocity() const {

@@ -20,7 +20,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "FirstNoteGood"
+            "pathName": "FirstNote"
           }
         },
         {
@@ -39,6 +39,12 @@
           "type": "named",
           "data": {
             "name": "Shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "FirstNote"
           }
         }
       ]

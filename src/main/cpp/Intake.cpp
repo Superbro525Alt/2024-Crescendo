@@ -12,7 +12,7 @@
 Intake::Intake(IntakeConfig config)
     : _config(config),
       _pid(frc::PIDController(0.02, 0, 0, 0.05_s)),
-      _pidPosition(frc::PIDController(1.4, 0, 0, 0.05_s)) {}
+      _pidPosition(frc::PIDController(1.35, 0, 0, 0.05_s)) {}
 
 IntakeConfig Intake::GetConfig() {
   return _config;
@@ -113,8 +113,8 @@ void Intake::OnUpdate(units::second_t dt) {
   _table->GetEntry("Shot Count").SetDouble(_noteShot);
   _table->GetEntry("Current Time").SetDouble(_timer.Get().value());
 
-  if (_timer.Get() < 2_s) {
-    _setVoltage = units::math::min(0_V, _setVoltage);
+  if (_timer.Get() < 1_s) {
+    _setVoltage = 0_V;
   } else {
     _timer.Stop();
   }

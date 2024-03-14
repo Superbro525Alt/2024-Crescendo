@@ -303,12 +303,12 @@ void SwerveModule::OnUpdate(units::second_t dt) {
   //     units::math::max(units::math::min(driveVoltage, voltageMax), voltageMin);
 
   driveVoltage = units::math::min(driveVoltage, 7_V);
-  turnVoltage = units::math::min(turnVoltage, 6_V);
+  turnVoltage = units::math::min(turnVoltage, 10_V);
 
   // driveVoltage = units::math::min(
   //     units::math::max(driveVoltage, -_driveModuleVoltageLimit),
   //     _driveModuleVoltageLimit);  // was originally 10_V
-  units::volt_t turnVoltageMax = 7_V - (driveVoltage * (7_V / 10_V));
+  units::volt_t turnVoltageMax = 10_V - (driveVoltage * (10_V / 10_V));
   turnVoltage = units::math::min(units::math::max(turnVoltage, -turnVoltageMax), turnVoltageMax);
   // turnVoltage = units::math::min(units::math::max(turnVoltage, -7_V), 7_V);
 

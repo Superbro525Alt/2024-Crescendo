@@ -32,7 +32,8 @@ enum class AlphaArmState {
   kClimbAngle,
   kClimbed,
   kRaw,
-  kIntakedAngle
+  kIntakedAngle,
+  kBackShooting
 };
 
 class AlphaArm : public behaviour::HasBehaviour {
@@ -53,7 +54,7 @@ class AlphaArm : public behaviour::HasBehaviour {
 
   AlphaArmConfig* _config;
   // wom::vision::Limelight* _vision;
-  AlphaArmState _state = AlphaArmState::kIdle;
+  AlphaArmState _state = AlphaArmState::kIdle; // CHANGE BACK TO kIdle
   std::string _stringStateName;
   // wom::utils::PIDController<units::degree, units::volt> _alphaArmPID;
   // frc::DutyCycleEncoder armEncoder{4};

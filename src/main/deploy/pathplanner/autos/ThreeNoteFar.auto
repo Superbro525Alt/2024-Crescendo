@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.0,
-      "y": 0.0
+      "x": 0.7850516674765234,
+      "y": 6.3027226484706595
     },
     "rotation": 0
   },
@@ -18,28 +18,15 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "FirstNote"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeNote"
-                }
-              }
-            ]
+            "pathName": "LeftCloseLeft"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "BackwardsWorse"
+            "name": "IntakeNote"
           }
         },
         {
@@ -49,46 +36,27 @@
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "TurnToSecondNoteFar"
+            "pathName": "FarLeft"
           }
         },
         {
-          "type": "parallel",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "GoToSecondNoteFar"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeNote"
-                }
-              }
-            ]
+            "name": "IntakeNote"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "BackFromSecondNoteFar"
+            "pathName": "FarLeftReturn"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "Shoot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "TurnToSpeakerFromSecondFar"
           }
         }
       ]

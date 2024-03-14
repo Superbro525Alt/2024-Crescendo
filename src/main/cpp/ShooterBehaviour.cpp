@@ -39,6 +39,9 @@ void ShooterManualControl::OnTick(units::second_t dt) {
     if (_codriver->GetLeftTriggerAxis() > 0.1) {
       _shooter->SetPidGoal(1500_rad_per_s);
       _shooter->SetState(ShooterState::kSpinUp);
+    } else if (_codriver->GetYButton()) {
+      _shooter->SetPidGoal(1500_rad_per_s);
+      _shooter->SetState(ShooterState::kSpinUp);
     } else if (_codriver->GetLeftBumper()) {
       _shooter->SetPidGoal(300_rad_per_s);
       _shooter->SetState(ShooterState::kSpinUp);
@@ -54,7 +57,7 @@ void ShooterManualControl::OnTick(units::second_t dt) {
     if (_shooter->GetState() == ShooterState::kSpinUp || _shooter->GetState() == ShooterState::kShooting) {
       _intake->SetIntakeSpeed(-2_V);
     } else {
-      _intake->SetIntakeSpeed(-8_V);
+      _intake->SetIntakeSpeed(-4_V);
     }
   }
 }

@@ -104,6 +104,7 @@ class DutyCycleEncoder : public Encoder {
   double GetEncoderRawTicks() const override;
   double GetEncoderTickVelocity() const override;
   double GetVelocity() const override;
+  void ZeroEncoder() override;
 
  private:
   frc::DutyCycleEncoder* _dutyCycleEncoder;

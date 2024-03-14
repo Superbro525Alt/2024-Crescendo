@@ -51,7 +51,7 @@ void Robot::RobotInit() {
 
   _led = new LED();
 
-  armServo = new frc::Servo(3);
+  armServo = new frc::Servo(2);
 
   shooter = new Shooter(robotmap.shooterSystem.config);
   
@@ -148,6 +148,8 @@ void Robot::RobotPeriodic() {
   } else {
     _led->SetState(LEDState::kIdle);
   }
+
+  robotmap.swerveTable.swerveDriveTable->GetEntry("SERVO POS").SetDouble(armServo->Get() * 180);
 }
 
 void Robot::AutonomousInit() {
@@ -194,22 +196,20 @@ void Robot::TeleopInit() {
   // reimplement when vision is reimplemented
 
   // _swerveDrive->SetPose(_vision->GetAngleToObject(VisionTargetObjects::kNote).first);
-  armServo->SetAngle(130);
+  armServo->SetAngle(0);
 }
 
 void Robot::TeleopPeriodic() {
-  if (robotmap.controllers.testController.GetPOV() == 0) {
-    armServo->SetAngle(130);
+  if (robotmap.controllers.codriver.GetPOV() == 0) {
+    armServo->SetAngle(0);
   } else if (robotmap.controllers.codriver.GetPOV() == 270) {
     climberTimer.Start();
     if (climberTimer.Get() > 1_s) {
-      armServo->SetAngle(0);
+      armServo->SetAngle(180);
       climberTimer.Stop();
       climberTimer.Reset();
     } 
   }
-
-  robotmap.swerveTable.swerveDriveTable->GetEntry("SERVO POS").SetDouble(armServo->GetAngle());
 }
 
 void Robot::DisabledInit() {}

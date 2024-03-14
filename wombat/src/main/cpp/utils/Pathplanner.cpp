@@ -265,9 +265,9 @@ utils::FollowPath::FollowPath(drivetrain::SwerveDrive* swerve, std::string path,
 
   // cjson.pop_back();
   //
-  _path = pathplanner::PathPlannerPath::fromPathFile(path);
+  // _path = pathplanner::PathPlannerPath::fromPathFile(path);
 
-  std::vector<pathplanner::PathPoint> points = _path->getAllPathPoints();
+  std::vector<pathplanner::PathPoint> points = pathplanner::PathPlannerPath::fromPathFile(path)->getAllPathPoints();
 
   points = CheckPoints(points);
 

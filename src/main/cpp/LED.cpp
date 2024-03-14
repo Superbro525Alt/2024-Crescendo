@@ -15,7 +15,7 @@ void LED::OnUpdate(units::second_t dt) {
     } break;
     case LEDState::kAiming: {
       stateName = "Aiming";
-      _led.frc::PWM::SetSpeed(-0.03); //green flash
+      _led.frc::PWM::SetSpeed(-0.03); // green flash
     } break;
     case LEDState::kShooterReady: {
       stateName = "Shooter";
@@ -31,7 +31,7 @@ void LED::OnUpdate(units::second_t dt) {
     } break;
     case LEDState::kIntaking: {
       stateName = "Intaking";
-      _led.frc::PWM::SetSpeed(0.27); //white solid
+      _led.frc::PWM::SetSpeed(0.76); //yellow solid
     } break;
     
 

@@ -55,7 +55,7 @@ class Intake : public behaviour::HasBehaviour {
   frc::PIDController _pid;
   frc::PIDController _pidPosition;
 
-  units::volt_t _intakeVoltage = -8_V;
+  units::volt_t _intakeVoltage = -5_V;
 
   std::shared_ptr<nt::NetworkTable> _table = nt::NetworkTableInstance::GetDefault().GetTable("Intake");
 
