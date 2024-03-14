@@ -51,7 +51,7 @@
         {
           "type": "named",
           "data": {
-            "name": "TurnToSecondNoteFar"
+            "name": "TurnToSecondNoteFromSide"
           }
         },
         {
@@ -61,7 +61,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "GoToSecondNoteFar"
+                  "pathName": "SecondNoteFromSide"
                 }
               },
               {
@@ -76,19 +76,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "BackFromSecondNoteFar"
+            "pathName": "BackFromSecondNoteFromSide"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "TurnToSpeakerFromSecondSide"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "Shoot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "TurnToSpeakerFromSecondFar"
           }
         }
       ]

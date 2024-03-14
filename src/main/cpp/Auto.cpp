@@ -48,8 +48,8 @@ wom::SwerveAutoBuilder* autos::InitCommands(wom::drivetrain::SwerveDrive* _swerv
   return new wom::utils::SwerveAutoBuilder(_swerveDrive, "Taxi", c);
 }
 
-std::shared_ptr<behaviour::Behaviour> autos::Taxi(wom::SwerveAutoBuilder* builder) {
-  return builder->GetAutoRoutine("Taxi");
+std::shared_ptr<behaviour::Behaviour> autos::make(wom::SwerveAutoBuilder* builder, std::string path) {
+  return builder->GetAutoRoutine(path);
   // return behaviour::make<ArmToSetPoint>(_alphaArm, 0_deg);
   // behaviour::make<AutoShoot>(_shooter);
   // behaviour::make<ArmToSetPoint>(_alphaArm, 1_deg);

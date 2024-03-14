@@ -18,13 +18,19 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "TurnToSecondNoteFromOtherSide"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "FirstNote"
+                  "pathName": "SecondNoteFromOtherSide"
                 }
               },
               {
@@ -39,56 +45,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "BackwardsWorse"
+            "pathName": "BackFromSecondNoteFromOtherSide"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "TurnToSpeakerFromSecondSide"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "Shoot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "TurnToSecondNoteFar"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "GoToSecondNoteFar"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeNote"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "BackFromSecondNoteFar"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "TurnToSpeakerFromSecondFar"
           }
         }
       ]

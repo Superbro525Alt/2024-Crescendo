@@ -1,12 +1,6 @@
 {
   "version": 1.0,
-  "startingPose": {
-    "position": {
-      "x": 0.0,
-      "y": 0.0
-    },
-    "rotation": 0
-  },
+  "startingPose": null,
   "command": {
     "type": "sequential",
     "data": {
@@ -14,7 +8,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "ShootAndWait"
           }
         },
         {
@@ -51,7 +45,7 @@
         {
           "type": "named",
           "data": {
-            "name": "TurnToSecondNoteFar"
+            "name": "TurnToSecondNote"
           }
         },
         {
@@ -61,7 +55,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "GoToSecondNoteFar"
+                  "pathName": "GoToSecondNote"
                 }
               },
               {
@@ -76,19 +70,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "BackFromSecondNoteFar"
+            "pathName": "BackFromSecondNote"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "TurnToSpeakerFromSecond"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "Shoot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "TurnToSpeakerFromSecondFar"
           }
         }
       ]

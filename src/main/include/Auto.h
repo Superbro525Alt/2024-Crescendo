@@ -24,7 +24,7 @@ wom::utils::SwerveAutoBuilder* InitCommands(wom::drivetrain::SwerveDrive* _swerv
 std::shared_ptr<behaviour::Behaviour> AutoTest(wom::drivetrain::SwerveDrive* _swerveDrive, Shooter* _shooter,
                                                Intake* _intake, AlphaArm* _alphaArm);
 
-std::shared_ptr<behaviour::Behaviour> Taxi(wom::utils::SwerveAutoBuilder* builder);
+std::shared_ptr<behaviour::Behaviour> make(wom::utils::SwerveAutoBuilder* builder, std::string path);
 std::shared_ptr<behaviour::Behaviour> OneNoteTaxi(wom::utils::SwerveAutoBuilder* builder);
 std::shared_ptr<behaviour::Behaviour> FourNoteTaxi(wom::utils::SwerveAutoBuilder* builder);
 std::shared_ptr<behaviour::Behaviour> ThreeNoteTaxiFar(wom::utils::SwerveAutoBuilder* builder);
